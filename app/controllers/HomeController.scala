@@ -56,6 +56,10 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.othello(gameController))
   }
 
+  def rules: Action[AnyContent] = Action {
+    Ok(views.html.rules())
+  }
+
   def processInputLine: String => Unit = {
     input => input.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)").toList match {
       case col :: row :: Nil =>

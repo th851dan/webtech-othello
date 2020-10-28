@@ -5,12 +5,13 @@
 @value(col: Int, row: Int) = @{controller.valueOf(col, row)}
 @main("Othello") {
     <div class="gamecontainer">
-        <div class="topNav">
-            <a href="/new">New Game</a>
-        </div>
+        <a href="/new">New Game</a>
+        <br/>
+        <a href="/rules">Rules</a>
         <div class="game">
+            <center>
             <h3>
-                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                &nbsp&nbsp&nbsp&nbsp
                 ● @count(1)
                 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                 ○ @count(2)
@@ -22,10 +23,10 @@
                     </th>
                 }
             @for(row <- 0 until size) {
-                <tr bgcolor="#ffffff">
+                <tr bgcolor="#458440">
                     <th bgcolor="#aaaaaa" >@{row + 1}</th>
                 @for(col <- 0 until size){
-                    <td bgcolor="#ffffff" style="width: 20px; height: 20px">
+                    <td bgcolor="#458440" style="width: 20px; height: 20px">
                     @{
                         if (value(col, row) == 0) {
                             " "
@@ -42,6 +43,7 @@
                 </tr>
             }
             </table>
+            </center>
         </div>
     </div>
 }

@@ -10,6 +10,7 @@ GET     /currentplayer              controllers.HomeController.currentPlayer
 GET     /resize/:op                 controllers.HomeController.resizeBoard(op)
 GET     /new                        controllers.HomeController.newGame
 GET     /set/:pos                   controllers.HomeController.set(pos)
+GET     /rules                      controllers.HomeController.rules
 
 
 # Map static resources from the /public folder to the /assets URL path

@@ -35,7 +35,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   }
 
   def othello: Action[AnyContent] = Action {
-    Ok(gameController.boardToString)
+    Ok(views.html.othello(gameController))
   }
 
   def currentPlayer: Action[AnyContent] = Action {
@@ -44,16 +44,16 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
 
   def newGame: Action[AnyContent] = Action {
     Await.result(gameController.newGame, Duration.Inf)
-    Ok(gameController.boardToString)
+    Ok(views.html.othello(gameController))
   }
 
   def resizeBoard(op: String): Action[AnyContent] = Action {
     gameController.resizeBoard(op)
-    Ok(gameController.boardToString)
+    Ok(views.html.othello(gameController))
   }
   def set(pos: String): Action[AnyContent] = Action {
     processInputLine(pos)
-    Ok(gameController.boardToString)
+    Ok(views.html.othello(gameController))
   }
 
   def processInputLine: String => Unit = {

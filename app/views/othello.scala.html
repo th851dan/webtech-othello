@@ -1,0 +1,47 @@
+@(controller: de.htwg.se.othello.controller.controllerComponent.ControllerInterface)
+
+@size = @{ controller.size }
+@count(colorValue: Int) = @{controller.count(colorValue)}
+@value(col: Int, row: Int) = @{controller.valueOf(col, row)}
+@main("Othello") {
+    <div class="gamecontainer">
+        <div class="topNav">
+            <a href="/new">New Game</a>
+        </div>
+        <div class="game">
+            <h3>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                ● @count(1)
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                ○ @count(2)
+            </h3>
+            <table cellspacing="1" bgcolor="#000000" style="text-align: center">
+                @for(row <- 0 until size + 1) {
+                    <th bgcolor="#aaaaaa" style="width: 20px; height: 20px">
+                        @{if (row == 0) "" else (row + 64).toChar}
+                    </th>
+                }
+            @for(row <- 0 until size) {
+                <tr bgcolor="#ffffff">
+                    <th bgcolor="#aaaaaa" >@{row + 1}</th>
+                @for(col <- 0 until size){
+                    <td bgcolor="#ffffff" style="width: 20px; height: 20px">
+                    @{
+                        if (value(col, row) == 0) {
+                            " "
+                        } else if (value(col, row) == -1) {
+                            "x"
+                        } else if (value(col,row) == 1) {
+                            "●"
+                        } else {
+                            "○"
+                        }
+                    }
+                    </td>
+                }
+                </tr>
+            }
+            </table>
+        </div>
+    </div>
+}

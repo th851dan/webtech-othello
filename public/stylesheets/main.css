@@ -9,7 +9,7 @@ body{
     height: 48px;
     width: 100%;
     background-color: #4d4d4d;
-    position: fixed;
+    position: sticky;
     top: 0;
     box-shadow:0 10px 16px 0 rgba(0,0,0,0.1),0 2px 3px 0 rgba(0,0,0,0.19);
 }
@@ -74,13 +74,11 @@ body{
 }
 
 .game > .game-table .corner {
-    width: 24px;
-    height: 28px;
-    background: #aaaaaa
+    height: auto;
+    background: #ffffff;
 }
 
 .game > .game-table .column-header {
-    width: 44px;
     height: 28px;
     background: #aaaaaa
 }
@@ -102,7 +100,7 @@ body{
 }
 
 .rules {
-    text-align: center;
+    text-align: justify;
     width: 70%;
     background-color: #aaaaaa;
     box-shadow:0 10px 16px 0 rgba(0,0,0,0.3),0 3px 10px 0 rgba(0,0,0,0.29);
@@ -111,6 +109,12 @@ body{
 
 .rules > .content {
     padding: 50px 50px 50px 50px;
+}
+
+.rules > .content img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .dot {

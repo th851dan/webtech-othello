@@ -9,7 +9,8 @@ body{
     height: 48px;
     width: 100%;
     background-color: #4d4d4d;
-
+    position: fixed;
+    top: 0;
     box-shadow:0 10px 16px 0 rgba(0,0,0,0.1),0 2px 3px 0 rgba(0,0,0,0.19);
 }
 
@@ -54,8 +55,7 @@ body{
 
 .game {
     display: table;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 48px auto;
 }
 
 .game > .score {
@@ -102,7 +102,7 @@ body{
 }
 
 .rules {
-    margin: 0;
+    margin: 68px;
     text-align: center;
     width: 70%;
     background-color: #aaaaaa;

@@ -5,39 +5,38 @@
 @value(col: Int, row: Int) = @{controller.valueOf(col, row)}
 @main("Othello") {
     @navbar()
-    <center>
-        <div class="game">
-            <h3>
-                &nbsp&nbsp&nbsp&nbsp
-                    <img src=@routes.Assets.versioned("images/1.png") alt="●"/> @count(1)
-                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                    <img src=@routes.Assets.versioned("images/2.png") alt="○"/> @count(2)
-            </h3>
-            <table bgcolor="#333333" style="text-align: center">
-                @for(row <- 0 until size + 1) {
-                    <th bgcolor="#aaaaaa" style="width: 50px; height: 50px">
-                        @{if (row == 0) "" else (row + 64).toChar}
-                    </th>
+    <div class="game">
+        <h3 class="score">
+            <img src=@routes.Assets.versioned("images/1.png") alt="●"/> @count(1)
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <img src=@routes.Assets.versioned("images/2.png") alt="○"/> @count(2)
+        </h3>
+        <table class="game-table" style="background-image: url(@routes.Assets.versioned("images/back.jpg"))">
+            @for(row <- 0 until size + 1) {
+                @if(row == 0) {
+                    <th class="corner"> </th>
+                } else {
+                    <th class="column-header">@{(row + 64).toChar}</th>
                 }
+            }
             @for(row <- 0 until size) {
-                <tr bgcolor="#458440">
-                    <th bgcolor="#aaaaaa" >@{row + 1}</th>
-                @for(col <- 0 until size){
-                    <td bgcolor="#458440" style="width: 50px; height: 50px">
-                    @{
-                        if (value(col, row) == -1) {
+                <tr>
+                    <th class ="row-header">@{row + 1}</th>
+                    @for(col <- 0 until size){
+                        <td class ="cell">
+                        @{
+                            if (value(col, row) == -1) {
                                 "x"
-                        } else if (value(col,row) == 1) {
-                                    <img src='/assets/images/1.png'/>
-                        } else if (value(col, row) == 2){
-                                    <img src='/assets/images/2.png'/>
+                            } else if (value(col,row) == 1) {
+                                        <img src='/assets/images/1.png'/>
+                            } else if (value(col, row) == 2){
+                                        <img src='/assets/images/2.png'/>
+                            }
                         }
+                        </td>
                     }
-                    </td>
-                }
                 </tr>
             }
-            </table>
-        </div>
-    </center>
+        </table>
+    </div>
 }

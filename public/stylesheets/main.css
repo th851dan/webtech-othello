@@ -2,12 +2,15 @@ body{
     margin: 0;
     padding: 0;
     font-family: sans-serif;
+    background-color: #dddddd;
 }
 
 .navbar {
-    height: 50px;
+    height: 48px;
     width: 100%;
     background-color: #4d4d4d;
+
+    box-shadow:0 10px 16px 0 rgba(0,0,0,0.1),0 2px 3px 0 rgba(0,0,0,0.19);
 }
 
 .navbar > .navbar-header {
@@ -17,13 +20,18 @@ body{
 .navbar > .navbar-header > .navbar-title {
     display: inline-block;
     font-size: 22px;
-    padding: 10px 10px 10px 10px;
 }
 
 .navbar > .navbar-header > .navbar-title > a {
     display: inline-block;
     text-decoration: none;
+    padding: 10px 10px 10px 10px;
     color: #fff;
+}
+
+.navbar > .navbar-header > .navbar-title > a:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease-in;
 }
 
 .navbar > .navbar-links {
@@ -41,4 +49,68 @@ body{
 
 .navbar > .navbar-links > a:hover {
     background-color: rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease-in;
+}
+
+.game {
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.game > .score {
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.game > .game-table {
+    text-align: center;
+    border-spacing: 0;
+    background-position: bottom;
+    border: 7px solid saddlebrown;
+    border-radius: 4px;
+    box-shadow:0 10px 16px 0 rgba(0,0,0,0.3),0 6px 20px 0 rgba(0,0,0,0.29);
+}
+
+.game > .game-table .corner {
+    width: 24px;
+    height: 28px;
+    background: #aaaaaa
+}
+
+.game > .game-table .column-header {
+    width: 44px;
+    height: 28px;
+    background: #aaaaaa
+}
+
+.game > .game-table .row-header {
+    background: #aaaaaa;
+    width: 28px
+}
+
+.game > .game-table .cell {
+    width: 44px;
+    height: 44px;
+    border: solid black 1px
+}
+
+.game > .game-table .cell:hover {
+    background-color: rgba(160, 160, 160, 0.3);
+    transition: all 0.2s ease-in;
+}
+
+.rules {
+    margin: 0;
+    text-align: center;
+    width: 70%;
+    background-color: #aaaaaa;
+    box-shadow:0 10px 16px 0 rgba(0,0,0,0.3),0 3px 10px 0 rgba(0,0,0,0.29);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.rules > .content {
+    padding: 50px 50px 50px 50px;
 }

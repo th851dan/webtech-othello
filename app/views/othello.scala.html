@@ -4,21 +4,18 @@
 @count(colorValue: Int) = @{controller.count(colorValue)}
 @value(col: Int, row: Int) = @{controller.valueOf(col, row)}
 @main("Othello") {
-    <div class="gamecontainer">
-        <a href="/new">New Game</a>
-        <br/>
-        <a href="/rules">Rules</a>
+    @navbar()
+    <center>
         <div class="game">
-            <center>
             <h3>
                 &nbsp&nbsp&nbsp&nbsp
-                ● @count(1)
+                    <img src=@routes.Assets.versioned("images/1.png") alt="●"/> @count(1)
                 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                ○ @count(2)
+                    <img src=@routes.Assets.versioned("images/2.png") alt="○"/> @count(2)
             </h3>
-            <table cellspacing="1" bgcolor="#000000" style="text-align: center">
+            <table bgcolor="#333333" style="text-align: center">
                 @for(row <- 0 until size + 1) {
-                    <th bgcolor="#aaaaaa" style="width: 20px; height: 20px">
+                    <th bgcolor="#aaaaaa" style="width: 50px; height: 50px">
                         @{if (row == 0) "" else (row + 64).toChar}
                     </th>
                 }
@@ -26,16 +23,14 @@
                 <tr bgcolor="#458440">
                     <th bgcolor="#aaaaaa" >@{row + 1}</th>
                 @for(col <- 0 until size){
-                    <td bgcolor="#458440" style="width: 20px; height: 20px">
+                    <td bgcolor="#458440" style="width: 50px; height: 50px">
                     @{
-                        if (value(col, row) == 0) {
-                            " "
-                        } else if (value(col, row) == -1) {
-                            "x"
+                        if (value(col, row) == -1) {
+                                "x"
                         } else if (value(col,row) == 1) {
-                            "●"
-                        } else {
-                            "○"
+                                    <img src='/assets/images/1.png'/>
+                        } else if (value(col, row) == 2){
+                                    <img src='/assets/images/2.png'/>
                         }
                     }
                     </td>
@@ -43,7 +38,6 @@
                 </tr>
             }
             </table>
-            </center>
         </div>
-    </div>
+    </center>
 }

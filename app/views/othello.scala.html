@@ -13,20 +13,24 @@
         </h3>
         <table class="game-table" style="background-image: url(@routes.Assets.versioned("images/back.jpg"))">
             @for(row <- 0 until size + 1) {
-                @if(row == 0) {
-                    <th class="corner"> </th>
-                } else {
-                    <th class="column-header">@{(row + 64).toChar}</th>
+                <th class="column-header">
+                @if(row > 0) {
+                    @{(row + 64).toChar}
                 }
+                </th>
             }
             @for(row <- 0 until size) {
                 <tr>
                     <th class ="row-header">@{row + 1}</th>
                     @for(col <- 0 until size){
-                        <td class ="cell">
+                        <td class="cell">
                         @{
-                            if (value(col, row) == -1) {
-                                <span class="dot"/>
+                            if (value(col, row) <= 0) {
+                                <a href={"/set/" + (col + 65).toChar + (row + 1)}>
+                                {if (value(col, row) == -1) {
+                                            <span class="dot"/>
+                                }}
+                                </a>
                             } else if (value(col,row) == 1) {
                                         <img src='/assets/images/1.png'/>
                             } else if (value(col, row) == 2){

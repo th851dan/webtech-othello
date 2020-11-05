@@ -3,11 +3,12 @@
 <div class="navbar">
     <div class="navbar-header">
         <div class="navbar-title">
-            <a href="/othello">Othello</a>
+            <a href=@{routes.HomeController.othello()}><i class="fa fa-dot-circle-o" aria-hidden="true"></i>thello</a>
         </div>
     </div>
     <div class="navbar-links">
-        <a href="/new">New Game</a>
-        <a href="/rules">Rules</a>
+        <a href=@{routes.HomeController.newGame()}>New Game</a>
+        <a href="@{routes.HomeController.rules()}">About</a>
+        <a href="https://github.com/th851dan/webtech-othello"><i class="fa fa-github" aria-hidden="true"></i></a>
     </div>
 </div>

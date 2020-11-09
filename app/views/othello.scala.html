@@ -5,12 +5,7 @@
 @value(col: Int, row: Int) = @{controller.valueOf(col, row)}
 @main("Othello") {
     @navbar()
-    <div class="sidenav">
-        <a href=@{routes.HomeController.newGame()}>New Game</a>
-        <a href=@{routes.HomeController.undo()}>Undo</a>
-        <a href="">Redo</a>
-        <a href=@{routes.HomeController.hint()}>Hint</a>
-    </div>
+    @sidenav()
     <div class="game">
         <h3 class="score">
             <img src=@routes.Assets.versioned("images/1.png") alt="●"/> @count(1)

@@ -70,6 +70,11 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.othello(gameController))
   }
 
+  def redo: Action[AnyContent] = Action {
+    gameController.redo()
+    Ok(views.html.othello(gameController))
+  }
+
   def processInputLine: String => Unit = {
     input => input.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)").toList match {
       case col :: row :: Nil =>

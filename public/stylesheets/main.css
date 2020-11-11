@@ -6,28 +6,26 @@ body {
 }
 
 .navbar {
-    height: 45px;
+    height: auto;
     width: 100%;
     background-color: #4d4d4d;
     position: sticky;
-    top: 0;
     box-shadow:0 10px 16px 0 rgba(0,0,0,0.1),0 2px 3px 0 rgba(0,0,0,0.19);
 }
 
 .navbar > .navbar-header {
-    display: inline;
+    width: 10%;
 }
 
 .navbar > .navbar-header > .navbar-title {
     background: cadetblue;
-    display: inline-block;
     font-size: 22px;
 }
 
 .navbar > .navbar-header > .navbar-title > a {
     display: inline-block;
     text-decoration: none;
-    width: 180px;
+    width: 100%;
     padding: 10px 10px 10px 10px;
     color: #fff;
 }
@@ -72,6 +70,7 @@ body {
     border: 7px solid saddlebrown;
     border-radius: 4px;
     box-shadow:0 10px 16px 0 rgba(0,0,0,0.3),0 6px 20px 0 rgba(0,0,0,0.29);
+    text-align: center;
 }
 
 .game > .game-table .column-header {
@@ -139,8 +138,8 @@ body {
 
 .sidenav {
     margin: 0;
-    padding-top: 70px;
-    width: 200px;
+    padding-top: 5%;
+    width: 15%;
     background-color: #f1f1f1;
     position: fixed;
     height: 100%;
@@ -150,14 +149,13 @@ body {
 .sidenav a {
     padding: 6px 8px 6px 16px;
     text-decoration: none;
-    font-size: 25px;
+    font-size: 2vw;
     color: #818181;
     display: block;
 }
 
 .sidenav a:hover {
     color: #444444;
-
     background-color: rgba(0, 0, 0, 0.3);
     transition: all 0.2s ease-in;
 }

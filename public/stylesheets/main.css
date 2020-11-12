@@ -6,34 +6,20 @@ body {
 }
 
 .navbar {
-    height: auto;
-    width: 100%;
-    background-color: #4d4d4d;
+    background-color: cadetblue;
     position: sticky;
     box-shadow:0 10px 16px 0 rgba(0,0,0,0.1),0 2px 3px 0 rgba(0,0,0,0.19);
+    padding: 0;
 }
 
 .navbar > .navbar-header {
     width: 10%;
 }
 
-.navbar > .navbar-header > .navbar-title {
-    background: cadetblue;
-    font-size: 22px;
-}
-
-.navbar > .navbar-header > .navbar-title > a {
-    display: inline-block;
-    text-decoration: none;
-    width: 100%;
-    padding: 10px 10px 10px 10px;
+.navbar > a {
     color: #fff;
 }
 
-.navbar > .navbar-header > .navbar-title > a:hover {
-    background-color: rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease-in;
-}
 
 .navbar > .navbar-links {
     display: inline;
@@ -136,26 +122,15 @@ body {
     display: inline-block;
 }
 
-.sidenav {
-    margin: 0;
-    padding-top: 5%;
-    width: 15%;
-    background-color: #f1f1f1;
-    position: fixed;
-    height: 100%;
-    overflow: auto;
-}
 
-.sidenav a {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 2vw;
-    color: #818181;
-    display: block;
-}
-
-.sidenav a:hover {
+.bd-links a:hover {
     color: #444444;
     background-color: rgba(0, 0, 0, 0.3);
     transition: all 0.2s ease-in;
+}
+
+.bd-links a {
+    width: 100%;
+    font-size: 2vw;
+    padding: 6px 8px 6px 16px;
 }

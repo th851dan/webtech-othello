@@ -1,47 +1,90 @@
 @(controller: de.htwg.se.othello.controller.controllerComponent.ControllerInterface)
 
-@size = @{ controller.size }
-@count(colorValue: Int) = @{controller.count(colorValue)}
-@value(col: Int, row: Int) = @{controller.valueOf(col, row)}
-@main("Othello") {
-    @navbar()
-    @sidenav()
-    <div class="game">
-        <h3 class="score">
-            <img src=@routes.Assets.versioned("images/1.png") alt="●"/> @count(1)
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            <img src=@routes.Assets.versioned("images/2.png") alt="○"/> @count(2)
-        </h3>
-        <table class="game-table" style="background-image: url(@routes.Assets.versioned("images/back.jpg"))">
-            @for(row <- 0 until size + 1) {
-                <th class="column-header">
-                @if(row > 0) {
-                    @{(row + 64).toChar}
-                }
-                </th>
-            }
-            @for(row <- 0 until size) {
-                <tr>
-                    <th class ="row-header">@{row + 1}</th>
-                    @for(col <- 0 until size){
-                        <td class="cell">
-                        @{
-                            if (value(col, row) <= 0) {
-                                <a href={"/set/" + (col + 65).toChar + (row + 1)}>
-                                {if (value(col, row) == -1) {
-                                            <span class="dot"/>
-                                }}
-                                </a>
-                            } else if (value(col,row) == 1) {
-                                        <img src='/assets/images/1.png'/>
-                            } else if (value(col, row) == 2){
-                                        <img src='/assets/images/2.png'/>
+    @size = @{
+        controller.size
+    }
+
+    @count(colorValue: Int) = @{
+        controller.count(colorValue)
+    }
+
+    @value(col: Int, row: Int) = @{
+        controller.valueOf(col, row)
+    }
+
+    @main("Othello") {
+        @navbar_bootstrap()
+        <div class="container-fullwidth">
+            <div class="row flex-xl-nowrap">
+                <div class="col-12 col-md-3 col-xl-2 bd-sidebar">
+                    <form class="bd-search d-flex align-items-center">
+                        <a class="btn btn-link bd-search-docs-toggle d-md-none p-0 ml-3" type="button" data-toggle="collapse" data-target="#bd-docs-nav" aria-controls="bd-docs-nav" aria-expanded="false" aria-label="Toggle docs navigation">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 30 30" width="30" height="30" focusable="false">
+                                <title>Menu</title>
+                                <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"/>
+                            </svg>
+                        </a>
+                    </form>
+                    <nav class="bd-links" id="bd-docs-nav">
+                        <a class="btn btn-light text-left" href=@{
+                            routes.HomeController.newGame()
+                        }>New Game</a>
+                        <a class="btn btn-light text-left" href=@{
+                            routes.HomeController.undo()
+                        }>Undo</a>
+
+                        <a class="btn btn-light text-left" href=@{
+                            routes.HomeController.redo()
+                        }>Redo</a>
+                        <a class="btn btn-light text-left" href=@{
+                            routes.HomeController.hint()
+                        }>Hint</a>
+                    </nav>
+                </div>
+                <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content">
+                    <div class="game">
+                        <h3 class="score">
+                            <img src=@routes.Assets.versioned("images/1.png") alt="●"/> @count(1)
+                            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                            <img src=@routes.Assets.versioned("images/2.png") alt="○"/> @count(2)
+                        </h3>
+                        <table class="game-table" style="background-image: url(@routes.Assets.versioned("images/back.jpg"))">
+                            @for(row <- 0 until size + 1) {
+                                <th class="column-header">
+                                @if(row > 0) {
+                                    @{
+                                        (row + 64).toChar
+                                    }
+                                }
+                                </th>
                             }
-                        }
-                        </td>
-                    }
-                </tr>
-            }
-        </table>
-    </div>
-}
+                            @for(row <- 0 until size) {
+                                <tr>
+                                    <th class ="row-header">@{
+                                        row + 1
+                                    }</th>
+                                    @for(col <- 0 until size) {
+                                        <td class="cell">
+                                        @{
+                                            if(value(col, row) <= 0) {
+                                                    <a href={"/set/" + (col + 65).toChar + (row + 1)}>
+                                                    {if(value(col, row) == -1) {
+                                                                <span class="dot"/>
+                                                    }}
+                                                    </a>
+                                            } else if(value(col, row) == 1) {
+                                                        <img src='/assets/images/1.png'/>
+                                            } else if(value(col, row) == 2) {
+                                                        <img src='/assets/images/2.png'/>
+                                            }
+                                        }
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </main>
+            </div>
+        </div>
+    }

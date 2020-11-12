@@ -1,0 +1,14 @@
+@()
+<div class="navbar navbar-dark justify-content-between">
+    <a class="navbar-brand" href=@{
+        routes.HomeController.othello()
+    }>
+        <i class="fa fa-dot-circle-o" aria-hidden="true"></i>thello
+    </a>
+    <div class="navbar-links">
+        <a href="@{
+            routes.HomeController.rules()
+        }">About</a>
+        <a href="https://github.com/th851dan/webtech-othello"><i class="fa fa-github" aria-hidden="true"></i></a>
+    </div>
+</div>

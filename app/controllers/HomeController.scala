@@ -1,6 +1,7 @@
 package controllers
 
 import com.google.inject.{Guice, Injector}
+import de.htwg.se.othello.aview.gui.SwingGui
 import de.htwg.se.othello.{BoardModuleServer, OthelloModule, UserModuleServer}
 import de.htwg.se.othello.controller.controllerComponent.ControllerInterface
 import javax.inject._
@@ -30,6 +31,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     val injector: Injector = Guice.createInjector(new OthelloModule)
     val gameController: ControllerInterface = injector.instance[ControllerInterface]
     val othelloAsText: String = gameController.boardToString
+    val gui: SwingGui = new SwingGui(gameController)
   def index: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.index())
   }

@@ -52,9 +52,11 @@
                             }
                             @for(row <- 0 until size) {
                                 <tr>
-                                    <th class ="row-header">@{
-                                        row + 1
-                                    }</th>
+                                    <th class ="row-header">
+                                        <div class="row-number">
+                                            @{row + 1}
+                                        </div>
+                                    </th>
                                     @for(col <- 0 until size) {
                                         <td class="cell">
                                         @{

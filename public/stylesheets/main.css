@@ -40,10 +40,10 @@ body {
 }
 
 .game {
-    height: 30vw;
-    width: 30vw;
+    height: 60vmin;
+    width: 60vmin;
     display: table;
-    margin: 48px auto;
+    margin: 3vh auto;
 }
 
 .game > .score {
@@ -52,27 +52,43 @@ body {
     margin-right: auto;
 }
 
+.game > .score img {
+    width: 5vmin;
+    height: 5vmin;
+}
+
 .game > .game-table {
     border-spacing: 0;
     background-position: bottom;
-    border: 0.5vw solid saddlebrown;
+    border: 0.7vmin solid saddlebrown;
     box-shadow:0 10px 16px rgba(0,0,0,0.3),0 6px 20px rgba(0,0,0,0.29);
     text-align: center;
 }
 
 .game > .game-table .column-header {
-    height: 2vw;
+    height: 2vmin;
+    font-size: 1.5vmin;
     background: #aaaaaa
 }
 
 .game > .game-table .row-header {
     background: #aaaaaa;
-    width: 2vw;
+    width: 2vmin;
+}
+
+
+.game > .game-table .row-header .row-number {
+    -webkit-transform: rotate(90deg); /* Safari and Chrome */
+    -moz-transform: rotate(90deg);   /* Firefox */
+    -ms-transform: rotate(90deg);   /* IE 9 */
+    -o-transform: rotate(90deg);   /* Opera */
+    transform: rotate(90deg);
+    font-size: 1.5vmin;
 }
 
 .game > .game-table .cell {
-    width: 3vw;
-    height: 3vw;
+    width: 6vmin;
+    height: 6vmin;
     border: solid black 1px;
 }
 
@@ -89,8 +105,8 @@ body {
 }
 
 .game > .game-table .cell .dot {
-    height: 1.5vw;
-    width: 1.5vw;
+    height: 3vmin;
+    width: 3vmin;
     background-color: rgba(12,12,12,0.7);
     border-radius: 50%;
     display: inline-block;
@@ -98,8 +114,8 @@ body {
 }
 
 .game > .game-table .cell img {
-    width: 2.5vw;
-    height: 2.5vw;
+    width: 4vmin;
+    height: 4vmin;
 }
 
 .rules {
@@ -120,15 +136,6 @@ body {
     margin-right: auto;
 }
 
-.dot {
-    height: 25px;
-    width: 25px;
-    background-color: rgba(12,12,12,0.7);
-    border-radius: 50%;
-    display: inline-block;
-}
-
-
 .bd-links a:hover {
     color: #444444;
     background-color: rgba(0, 0, 0, 0.3);
@@ -137,6 +144,6 @@ body {
 
 .bd-links a {
     width: 100%;
-    font-size: 2vw;
-    padding: 6px 8px 6px 16px;
+    font-size: 2vmin;
+    padding: 1em 2em;
 }

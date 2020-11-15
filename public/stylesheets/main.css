@@ -147,3 +147,19 @@ body {
     font-size: 2vmin;
     padding: 1em 2em;
 }
+
+.bd-toc .position-absolute {
+    right: 0px;
+}
+
+.bd-toc .position-absolute  .navbar {
+    display: inline-block;
+}
+
+.bd-toc .position-absolute  .empty-span {
+    height: 50vh;
+}
+
+#bd-right-nav h5 {
+    margin: 1vh 0;
+}

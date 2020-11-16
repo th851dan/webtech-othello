@@ -1,3 +1,28 @@
+.landing-page {
+    font-size: 250%;
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.landing-page a {
+    text-decoration: none;
+    text-shadow: 1px 1px 2px rgba(10,10,10,0.5);
+    color: #818181;
+}
+
+.landing-page a:hover {
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+    animation: forwards;
+}
+
+.landing-page #playbutton {
+    font-size: 120%;
+    color: #5b9628;
+}
+
 .game {
     display: table;
     margin: 20px auto;
@@ -30,6 +55,7 @@
 }
 
 .game > .game-table .cell {
+    text-align: center;
     width: 48px;
     height: 48px;
     border: solid black 1px;

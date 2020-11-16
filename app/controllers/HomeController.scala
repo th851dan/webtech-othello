@@ -75,6 +75,11 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.othello(gameController))
   }
 
+  def difficulty(dif: String): Action[AnyContent] = Action {
+    gameController.setDifficulty(dif)
+    Ok(views.html.othello(gameController))
+  }
+
   def processInputLine: String => Unit = {
     input => input.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)").toList match {
       case col :: row :: Nil =>

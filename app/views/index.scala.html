@@ -1,6 +1,11 @@
 @()
 
-@main("Welcome to Play") {
-  <h1>Welcome to Play!</h1>
+@main("Welcome to Othello") {
   @navbar()
+  <div class="landing-page">
+      <a style="display: inline-block; text-align: center" href=@routes.HomeController.othello()>
+        <i id="playbutton" class="fa fa-play-circle-o"></i>
+      <span>NEW GAME</span>
+      </a>
+  </div>
 }

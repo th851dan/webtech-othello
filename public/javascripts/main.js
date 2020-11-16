@@ -18,10 +18,6 @@ document.onreadystatechange = function() {
     $(window).resize(checkWidth);
 };
 
-function setDifficulty(difficulty) {
-    fetch(apiUrl + "difficulty/" + difficulty).then(() => location.href = apiUrl + "othello")
-}
-
-function set(square) {
-    fetch(apiUrl + "set/" + square).then(() => location.href = apiUrl + "othello")
+function request(endpoint) {
+    fetch(apiUrl + endpoint).then(() => location.href = apiUrl + "othello")
 }

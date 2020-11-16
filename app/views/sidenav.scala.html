@@ -1,8 +1,49 @@
 @()
-
-<div class="sidenav">
-    <a href=@{routes.HomeController.newGame()}>New Game</a>
-    <a href=@{routes.HomeController.undo()}>Undo</a>
-    <a href=@{routes.HomeController.redo()}>Redo</a>
-    <a href=@{routes.HomeController.hint()}>Hint</a>
-</div>
+<nav class="sidenav bg-light collapse" id="sidebar">
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <button type="button" class="btn btn-light">
+                <a href=@{routes.HomeController.newGame()}>New Game</a>
+            </button>
+        </li>
+        <li class="nav-item">
+            <button type="button" class="btn btn-light">
+                <a href=@{routes.HomeController.undo()}>Undo</a>
+            </button>
+        </li>
+        <li class="nav-item">
+            <button type="button" class="btn btn-light">
+                <a href=@{routes.HomeController.redo()}>Redo</a>
+            </button>
+        </li>
+        <li class="nav-item">
+            <button type="button" class="btn btn-light">
+                <a href=@{routes.HomeController.hint()}>Hint</a>
+            </button>
+        </li>
+        <li class="nav-item">
+            <div class="dropdown">
+                <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Difficulty
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item">Easy</a>
+                    <a class="dropdown-item">Normal</a>
+                    <a class="dropdown-item">Hard</a>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item">
+            <div class="dropdown">
+                <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Mode
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item">Player vs Player</a>
+                    <a class="dropdown-item">Player vs Bot</a>
+                    <!-- no demo mode for now -->
+                </div>
+            </div>
+        </li>
+    </ul>
+</nav>

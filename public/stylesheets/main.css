@@ -1,63 +1,6 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-    background-color: #dddddd;
-}
-
-.navbar {
-    height: 45px;
-    width: 100%;
-    background-color: #4d4d4d;
-    position: sticky;
-    top: 0;
-    box-shadow:0 10px 16px 0 rgba(0,0,0,0.1),0 2px 3px 0 rgba(0,0,0,0.19);
-}
-
-.navbar > .navbar-header {
-    display: inline;
-}
-
-.navbar > .navbar-header > .navbar-title {
-    background: cadetblue;
-    display: inline-block;
-    font-size: 22px;
-}
-
-.navbar > .navbar-header > .navbar-title > a {
-    display: inline-block;
-    text-decoration: none;
-    width: 180px;
-    padding: 10px 10px 10px 10px;
-    color: #fff;
-}
-
-.navbar > .navbar-header > .navbar-title > a:hover {
-    background-color: rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease-in;
-}
-
-.navbar > .navbar-links {
-    display: inline;
-    float: right;
-    font-size: 18px;
-}
-
-.navbar > .navbar-links > a {
-    display: inline-block;
-    padding: 12px 10px 12px 10px;
-    text-decoration: none;
-    color: #efefef;
-}
-
-.navbar > .navbar-links > a:hover {
-    background-color: rgba(0, 0, 0, 0.3);
-    transition: all 0.2s ease-in;
-}
-
 .game {
     display: table;
-    margin: 48px auto;
+    margin: 20px auto;
 }
 
 .game > .score {
@@ -76,11 +19,13 @@ body {
 
 .game > .game-table .column-header {
     height: 28px;
+    text-align: center;
     background: #aaaaaa
 }
 
 .game > .game-table .row-header {
     background: #aaaaaa;
+    text-align: center;
     width: 28px
 }
 
@@ -138,26 +83,56 @@ body {
 }
 
 .sidenav {
-    margin: 0;
-    padding-top: 70px;
+    padding-top: 50px;
     width: 200px;
-    background-color: #f1f1f1;
     position: fixed;
     height: 100%;
-    overflow: auto;
+}
+
+.sidenav button {
+    width: 100%;
+    font-size: 22px;
+    color: #818181;
 }
 
 .sidenav a {
-    padding: 6px 8px 6px 16px;
+    display: inline-block;
+    height: 100%;
+    width: 100%;
     text-decoration: none;
-    font-size: 25px;
+    font-size: 22px;
     color: #818181;
-    display: block;
 }
 
-.sidenav a:hover {
-    color: #444444;
+.navbar {
+    padding: 0;
+    box-shadow:0 10px 16px 0 rgba(0,0,0,0.1),0 0 1px 0 rgba(0,0,0,0.09);
+}
 
-    background-color: rgba(0, 0, 0, 0.3);
-    transition: all 0.2s ease-in;
+.navbar > .navbar-brand {
+    margin: 0;
+    padding-left: 10px;
+    background: cadetblue;
+    width: 200px;
+}
+
+.navbar > .navbar-nav > .nav-link {
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.navbar > .navbar-nav > .nav-link a {
+    color: #cccccc;
+    text-decoration: none;
+    font-size: 18px;
+    margin-right: 5px;
+}
+
+@media (max-width: 800px) {
+    .navbar {
+        padding: 5px;
+    }
+    .navbar > .navbar-brand {
+        display: none;
+    }
 }

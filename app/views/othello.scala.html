@@ -8,11 +8,11 @@
     @sidenav()
     <div class="game">
         <h3 class="score">
-            <img src=@routes.Assets.versioned("images/1.png") alt="●"/> @count(1)
+            <img src="@routes.Assets.versioned("images/1.png")" alt="●"/> @count(1)
             &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            <img src=@routes.Assets.versioned("images/2.png") alt="○"/> @count(2)
+            <img src="@routes.Assets.versioned("images/2.png")" alt="○"/> @count(2)
         </h3>
-        <table class="game-table" style="background-image: url(@routes.Assets.versioned("images/back.jpg"))">
+        <table class="game-table" style="background: url(@routes.Assets.versioned("images/back.jpg"))">
             @for(row <- 0 until size + 1) {
                 <th class="column-header">
                 @if(row > 0) {

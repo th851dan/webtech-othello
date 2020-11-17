@@ -4,11 +4,11 @@ document.onreadystatechange = function() {
     const $window = $(window);
 
     function checkWidth() {
-        if ($window.width() < 800) {
+        if ($window.width() < 768) {
             $('#sidebar').removeClass('show');
         }
 
-        if ($window.width() >= 800) {
+        if ($window.width() >= 768) {
             $('#sidebar').addClass('show');
         }
     }

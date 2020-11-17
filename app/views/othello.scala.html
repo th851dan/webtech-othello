@@ -24,7 +24,7 @@
                 <tr>
                     <th class ="row-header">@{row + 1}</th>
                     @for(col <- 0 until size) {
-                        <td class="cell" id="@{(col + 65).toChar + "" + (row + 1)}" onclick=request(`set/${this.id}`)>
+                        <td class="cell" id="@{(col + 65).toChar}@{row + 1}" onclick=request(`set/${this.id}`)>
                         @{
                             if (value(col, row) == -1) {
                                         <span class="dot"/>

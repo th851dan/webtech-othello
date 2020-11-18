@@ -1,13 +1,9 @@
 .landing-page {
-    font-size: 250%;
     height: 70vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-size: 250%;
 }
 
 .landing-page a {
-    text-decoration: none;
     text-shadow: 1px 1px 2px rgba(10,10,10,0.5);
     color: #818181;
 }
@@ -18,70 +14,50 @@
     animation: forwards;
 }
 
-.landing-page #playbutton {
+.landing-page #play-button {
     font-size: 120%;
     color: #5b9628;
 }
 
-.game {
-    display: table;
-    margin: 20px auto;
-}
-
-.game > .score {
-    display: table;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.game > .game-table {
-    border-spacing: 0;
-    background-position: bottom;
+.game-table {
     border: 7px solid saddlebrown;
     border-radius: 4px;
     box-shadow:0 10px 16px 0 rgba(0,0,0,0.3),0 6px 20px 0 rgba(0,0,0,0.29);
 }
 
-.game > .game-table .column-header {
+.game-table .column-header {
     height: 28px;
-    text-align: center;
     background: #aaaaaa
 }
 
-.game > .game-table .row-header {
+.game-table .row-header {
     background: #aaaaaa;
-    text-align: center;
     width: 28px
 }
 
-.game > .game-table .cell {
-    text-align: center;
+.game-table .cell {
     width: 48px;
     height: 48px;
-    border: solid black 1px;
 }
 
-.game > .game-table .cell:hover {
+.game-table .cell:hover {
     background-color: rgba(160, 160, 160, 0.3);
     transition: all 0.2s ease-in;
 }
 
-.game > .game-table .cell .dot {
+.game-table .cell .dot {
     height: 25px;
     width: 25px;
-    margin-top: 5px;
     background-color: rgba(12,12,12,0.5);
     box-shadow: 0 1px 2px rgba(97,150,97,0.7);
-    border-radius: 50%;
-    display: inline-block;
 }
 
 .rules {
     text-align: justify;
-    width: 70%;
+    width: 80%;
     background-color: #aaaaaa;
     box-shadow:0 10px 16px 0 rgba(0,0,0,0.3),0 3px 10px 0 rgba(0,0,0,0.29);
-    margin: 68px auto;
+    margin: auto;
 }
 
 .rules > .content {
@@ -95,14 +71,12 @@
 }
 
 .sidenav {
+    z-index: 1;
     padding-top: 50px;
     width: 200px;
-    position: fixed;
-    height: 100%;
 }
 
 .sidenav button {
-    width: 100%;
     font-size: 22px;
     color: #818181;
 }
@@ -113,13 +87,10 @@
 }
 
 .navbar {
-    align-items: stretch;
-    padding: 0;
     box-shadow: 2px 3px 6px -1px rgba(0,0,0,0.29);
 }
 
 .navbar > .navbar-brand {
-    padding-left: 10px;
     background: cadetblue;
     width: 200px;
 }
@@ -131,56 +102,51 @@
     margin-right: 5px;
 }
 
-.collapse {
+.sidenav.collapse {
     visibility: hidden;
 }
-.collapse.show {
+
+.sidenav.collapse.show {
     transition-property: margin-left, visibility;
     transition-duration: 0.2s;
     visibility: visible;
-
     box-shadow: 0 0 5px -1px rgba(0,0,0,0.38);
 }
-.collapsing {
+
+.sidenav.collapsing {
     transition-property: margin-left, visibility;
     transition-duration: 0.2s;
     transition-timing-function: ease-in-out;
 }
 
-.collapsing.width {
+.sidenav.collapsing.side-collapse {
     transition-property: margin-left, visibility;
     margin-left: -200px;
 }
 
 @media (max-width: 800px) {
-    .game > .game-table .column-header {
+    .game-table .column-header {
         font-size: 12px;
         height: 22px;
     }
 
-    .game > .game-table .row-header {
+    .game-table .row-header {
         font-size: 12px;
         width: 22px
     }
 
-    .game > .game-table .cell {
+    .game-table .cell {
         width: 36px;
         height: 36px;
     }
 
-    .game > .game-table .cell img {
+    .game-table .cell img {
         width: 30px;
         height: 30px;
     }
 
-    .game > .game-table .cell .dot {
+    .game-table .cell .dot {
         height: 20px;
         width: 20px;
-    }
-}
-
-@media (max-width: 767px) {
-    .navbar {
-        padding: 5px;
     }
 }

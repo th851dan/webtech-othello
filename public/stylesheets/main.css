@@ -10,6 +10,7 @@ body {
     position: sticky;
     box-shadow:0 10px 16px 0 rgba(0,0,0,0.1),0 2px 3px 0 rgba(0,0,0,0.19);
     padding: 0;
+    width: 100%;
 }
 
 .navbar > .navbar-header {
@@ -40,8 +41,6 @@ body {
 }
 
 .game {
-    height: 60vmin;
-    width: 60vmin;
     display: table;
     margin: 3vh auto;
 }
@@ -57,7 +56,9 @@ body {
     height: 5vmin;
 }
 
+
 .game > .game-table {
+    width: 50vmin;
     border-spacing: 0;
     background-position: bottom;
     border: 0.7vmin solid saddlebrown;
@@ -66,56 +67,67 @@ body {
 }
 
 .game > .game-table .column-header {
-    height: 2vmin;
-    font-size: 1.5vmin;
     background: #aaaaaa
 }
 
-.game > .game-table .row-header {
+.game >  .game-table .row-header {
     background: #aaaaaa;
-    width: 2vmin;
 }
 
 
-.game > .game-table .row-header .row-number {
-    -webkit-transform: rotate(90deg); /* Safari and Chrome */
-    -moz-transform: rotate(90deg);   /* Firefox */
-    -ms-transform: rotate(90deg);   /* IE 9 */
-    -o-transform: rotate(90deg);   /* Opera */
-    transform: rotate(90deg);
-    font-size: 1.5vmin;
+.game >  .game-table .row-header .row-number {
+    /*-webkit-transform: rotate(90deg); !* Safari and Chrome *!*/
+    /*-moz-transform: rotate(90deg);   !* Firefox *!*/
+    /*-ms-transform: rotate(90deg);   !* IE 9 *!*/
+    /*-o-transform: rotate(90deg);   !* Opera *!*/
+    /*transform: rotate(90deg);*/
+    width: 100%;
 }
 
-.game > .game-table .cell {
-    width: 6vmin;
-    height: 6vmin;
-    border: solid black 1px;
+.container {
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+    border-style: none solid solid none;
+    border-width: 1px;
+    border-color: black;
 }
 
-.game > .game-table .cell:hover {
+.game > .game-table .container .cell {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.game > .game-table .container .cell:hover {
     background-color: rgba(160, 160, 160, 0.3);
     transition: all 0.2s ease-in;
 }
 
-.game > .game-table .cell a {
+.game > .game-table .container .cell a {
     margin: auto;
     width:100%;
     height: 100%;
     display: inline-flex;
 }
 
-.game > .game-table .cell .dot {
-    height: 3vmin;
-    width: 3vmin;
+.game > .game-table .container .cell .dot {
+    height: 60%;
+    width: 60%;
     background-color: rgba(12,12,12,0.7);
     border-radius: 50%;
     display: inline-block;
     margin: auto;
 }
 
-.game > .game-table .cell img {
-    width: 4vmin;
-    height: 4vmin;
+.game > .game-table .container .cell img {
+    align-content: center;
+    width: 100%;
+    height: auto;
 }
 
 .rules {
@@ -136,29 +148,70 @@ body {
     margin-right: auto;
 }
 
-.bd-links a:hover {
-    color: #444444;
-    background-color: rgba(0, 0, 0, 0.3);
-    transition: all 0.2s ease-in;
+.sidenav {
+    width: auto;
+    height: 100%;
+    font-size: 1vmin;
+    position: absolute;
+    left: 0;
+    z-index: 1;
 }
 
-.bd-links a {
+.sidenav a {
+    display: inline-block;
+    height: 100%;
     width: 100%;
-    font-size: 2vmin;
-    padding: 1em 2em;
+    color: #818181;
+    margin: 0 0.5vw;
 }
 
-.bd-toc .position-absolute {
+.sidenav button {
+    width: 100%;
+    color: #818181;
+}
+
+.sidenav a:hover {
+    text-decoration: none;
+    color: #343a40;
+}
+
+.collapse.show {
+    transition-property: margin-left, visibility;
+    transition-duration: 0.1s;
+    visibility: visible;
+    box-shadow: 0 0 5px -1px rgba(0,0,0,0.38);
+}
+.collapsing {
+    transition-property: margin-left, visibility;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in-out;
+}
+
+.collapsing.width {
+    transition-property: margin-left, visibility;
+    margin-left: -100%;
+}
+
+
+/*.collapsing {*/
+/*    transition-property: margin-left, visibility;*/
+/*    transition-duration: 0.2s;*/
+/*    transition-timing-function: ease-in-out;*/
+/*}*/
+
+/*.collapsing.width {*/
+/*    transition-property: margin-left, visibility;*/
+/*    margin-left: -200px;*/
+/*}*/
+
+.position-absolute {
     right: 0px;
 }
 
-.bd-toc .position-absolute  .navbar {
+.position-absolute  .navbar {
     display: inline-block;
 }
 
-.bd-toc .position-absolute  .empty-span {
-    height: 50vh;
-}
 
 #bd-right-nav h5 {
     margin: 1vh 0;

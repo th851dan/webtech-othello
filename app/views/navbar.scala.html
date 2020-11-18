@@ -1,13 +1,22 @@
 @()
-<div class="navbar">
-    <div class="navbar-header">
-        <div class="navbar-title">
-            <a href=@{routes.HomeController.othello()}>
-                <i class="fa fa-dot-circle-o" aria-hidden="true"></i>thello</a>
-        </div>
-    </div>
-    <div class="navbar-links">
-        <a href="@{routes.HomeController.rules()}">About</a>
+<div class="navbar navbar-dark justify-content-between">
+    <form class="bd-search d-flex align-items-center">
+        <a class="btn btn-dark bg-transparent border-0 d-md-none" role="button" data-toggle="collapse" data-target="#bd-left-nav" aria-controls="bd-left-nav" aria-expanded="false" aria-label="Toggle docs navigation">
+            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 30 30" width="30" height="30" focusable="false">
+                <title>Menu</title>
+                <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"/>
+            </svg>
+        </a>
+        <a class="navbar-brand" href=@{
+            routes.HomeController.othello()
+        }>
+            <i class="fa fa-dot-circle-o" aria-hidden="true"></i>thello
+        </a>
+    </form>
+    <div class="navbar-link">
+        <a href="@{
+            routes.HomeController.rules()
+        }">About</a>
         <a href="https://github.com/th851dan/webtech-othello"><i class="fa fa-github" aria-hidden="true"></i></a>
     </div>
 </div>

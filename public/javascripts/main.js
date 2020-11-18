@@ -1,3 +1,4 @@
+const apiUrl = "http://localhost:9000/"
 
 function difficultyModeFunction(diff, playerCount) {
     difficultyFunction(diff)
@@ -22,25 +23,23 @@ function modeFunction(playerCount) {
 }
 
 function changeDifficulty(elm, oldDiff) {
-    if(elm.checked) {
-        let newDiff = elm.value
-        if (confirm("Change difficulty to: " + newDiff + "?")) {
-            //TODO: Call function change difficulty
+        if (confirm("Change difficulty to: " + elm.innerHTML + "?")) {
+            request("difficulty/" + elm.id)
         } else
         {
             difficultyFunction(oldDiff)
         }
-    }
 }
 
 function changeMode(elm, oldMode) {
-    if(elm.checked) {
-        let newMode = elm.value == "cvc" ? "0" : elm.value == "pvc" ? "1" : "2"
-        if (confirm("Change mode to: " + elm.value + "?")) {
-            //TODO: Call function change mode
+        if (confirm("Change mode to: " + elm.innerHTML + "?")) {
+            request("mode/" + elm.id)
         } else
         {
             modeFunction(oldMode)
         }
-    }
+}
+
+function request(endpoint) {
+    fetch(apiUrl + endpoint).then(() => location.href = apiUrl + "othello")
 }

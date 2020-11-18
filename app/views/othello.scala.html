@@ -14,8 +14,8 @@
 
 @main("Othello") {
     <div class="container-fullwidth">
-        @navbar_bootstrap()
-        <div class="d-md-block">
+        @navbar()
+        <div class="d-md-none">
             <div class="position-absolute">
                 <nav class="navbar navbar-dark bg-dark">
                     <button class="navbar-toggler" type="button" onclick="difficultyModeFunction('@controller.difficulty', '@controller.playerCount')" data-toggle="collapse" data-target="#bd-right-nav" aria-controls="bd-right-nav" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,17 +60,22 @@
                 </nav>
             </div>
         </div>
-        @sidenav()
+        @sidenav(controller)
 
-        <div class="game">
-            <h3 class="score">
-                <img src=@routes.Assets.versioned("images/1.png") alt="●"/> @count(1)
-                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                <img src=@routes.Assets.versioned("images/2.png") alt="○"/> @count(2)
-            </h3>
+        <div class="d-table m-auto">
+            <div class="row m-2">
+                <div class="col text-center h-100">
+                    <img src="@routes.Assets.versioned("images/1.png")" alt="●"/>
+                    <span class="h4 align-middle">@count(1)</span>
+                </div>
+                <div class="col text-center h-100">
+                    <img src="@routes.Assets.versioned("images/2.png")" alt="○"/>
+                    <span class="h4 align-middle">@count(2)</span>
+                </div>
+            </div>
             <table class="game-table" style="background-image: url(@routes.Assets.versioned("images/back.jpg"))">
                 @for(row <- 0 until size + 1) {
-                    <th class="column-header">
+                    <th class="column-header text-center">
                     @if(row > 0) {
                         @{
                             (row + 64).toChar
@@ -80,7 +85,7 @@
                 }
                 @for(row <- 0 until size) {
                     <tr>
-                        <th class ="row-header">
+                        <th class ="row-header text-center">
                             <div class="row-number">
                             @{
                                 row + 1
@@ -95,7 +100,7 @@
                                         if(value(col, row) <= 0) {
                                                 <a href={"/set/" + (col + 65).toChar + (row + 1)}>
                                                 {if(value(col, row) == -1) {
-                                                            <span class="dot"/>
+                                                            <span class="dot d-inline-block rounded-circle"/>
                                                 }}
                                                 </a>
                                         } else if(value(col, row) == 1) {
@@ -111,6 +116,7 @@
                     </tr>
                 }
             </table>
+            <div>@controller.difficulty</div>
         </div>
     </div>
 }

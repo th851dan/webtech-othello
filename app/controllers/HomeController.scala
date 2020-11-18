@@ -1,9 +1,8 @@
 package controllers
 
 import com.google.inject.{Guice, Injector}
-import de.htwg.se.othello.aview.gui.SwingGui
-import de.htwg.se.othello.{BoardModuleServer, OthelloModule, UserModuleServer}
 import de.htwg.se.othello.controller.controllerComponent.ControllerInterface
+import de.htwg.se.othello.{BoardModuleServer, OthelloModule, UserModuleServer}
 import javax.inject._
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 import play.api.mvc._
@@ -11,27 +10,14 @@ import play.api.mvc._
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-
-/**
- * This controller creates an `Action` to handle HTTP requests to the
- * application's home page.
- */
 @Singleton
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
-  /**
-   * Create an Action to render an HTML page.
-   *
-   * The configuration in the `routes` file means that this method
-   * will be called when the application receives a `GET` request with
-   * a path of `/`.
-   */
-    val startBoardServer: Unit = BoardModuleServer.main(null)
-    val startUserServer: Unit = UserModuleServer.main(null)
-    val injector: Injector = Guice.createInjector(new OthelloModule)
-    val gameController: ControllerInterface = injector.instance[ControllerInterface]
-    val othelloAsText: String = gameController.boardToString
-    val gui: SwingGui = new SwingGui(gameController)
+  val startBoardServer: Unit = BoardModuleServer.main(null)
+  val startUserServer: Unit = UserModuleServer.main(null)
+  val injector: Injector = Guice.createInjector(new OthelloModule)
+  val gameController: ControllerInterface = injector.instance[ControllerInterface]
+
   def index: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.index())
   }
@@ -74,6 +60,21 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
 
   def redo: Action[AnyContent] = Action {
     gameController.redo()
+    Ok(views.html.othello(gameController))
+  }
+
+  def difficulty(dif: String): Action[AnyContent] = Action {
+    gameController.setDifficulty(dif)
+    Ok(views.html.othello(gameController))
+  }
+
+  def mode(dif: String): Action[AnyContent] = Action {
+    dif match {
+      case "pvp" => gameController.setupPlayers("2")
+      case "pvc" => gameController.setupPlayers("1")
+      case "cvc" => gameController.setupPlayers("0")
+    }
+
     Ok(views.html.othello(gameController))
   }
 

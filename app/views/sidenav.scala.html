@@ -1,8 +1,8 @@
 @()
-<nav class="sidenav collapse side-collapse bg-light h-100 position-fixed" id="sidebar">
+<nav class="sidenav collapse side-collapse bg-light min-vh-100 position-fixed" id="sidebar">
     <ul class="navbar-nav">
         <li class="nav-item">
-            <button type="button" class="btn btn-light w-100" data-toggle="modal" data-target="#new-game-modal">New Game</button>
+            <button type="button" role="button" class="btn btn-light w-100" data-toggle="modal" data-target="#new-game-modal">New Game</button>
         </li>
         <li class="nav-item">
             <button type="button" role="button" class="btn btn-light w-100" onclick=request("undo")>Undo</button>
@@ -14,27 +14,36 @@
             <button type="button" role="button" class="btn btn-light w-100" onclick=request("hint")>Hint</button>
         </li>
         <li class="nav-item">
-            <div class="dropdown">
-                <button type="button" role="button" class="btn btn-light dropdown-toggle w-100" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Difficulty
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" id="e" onclick="request(`difficulty/${this.id}`)">Easy</a>
-                    <a class="dropdown-item" id="m" onclick="request(`difficulty/${this.id}`)">Normal</a>
-                    <a class="dropdown-item" id="d" onclick="request(`difficulty/${this.id}`)">Hard</a>
-                </div>
+            <button type="button" role="button" class="btn btn-light dropdown-toggle w-100" data-toggle="collapse" data-target="#difficulty" aria-haspopup="true" aria-expanded="false">
+                Difficulty
+            </button>
+            <div class="collapse collapsible-panel" id="difficulty">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <button type="button" role="button" class="btn w-100" id="e" onclick=request("difficulty/e")>Easy</button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" role="button" class="btn w-100" id="m" onclick=request("difficulty/m")>Normal</button>
+                    </li>
+                    <li>
+                        <button type="button" role="button" class="btn w-100" id="d" onclick=request("difficulty/d")>Hard</button>
+                    </li>
+                </ul>
             </div>
         </li>
         <li class="nav-item">
-            <div class="dropdown">
-                <button type="button" role="button" class="btn btn-light dropdown-toggle w-100" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Mode
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item">Player vs Player</a>
-                    <a class="dropdown-item">Player vs Bot</a>
-                    <!-- no demo mode for now -->
-                </div>
+            <button type="button" role="button" class="btn btn-light dropdown-toggle w-100" data-toggle="collapse" data-target="#player-mode" aria-haspopup="true" aria-expanded="false">
+                Mode
+            </button>
+            <div class="collapse collapsible-panel" id="player-mode">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <button type="button" role="button" class="btn toggled w-100">Player vs Player</button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" role="button" class="btn w-100">Player vs Bot</button>
+                    </li>
+                </ul>
             </div>
         </li>
     </ul>
@@ -49,11 +58,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p style="text-align: center">Current score will be lost.</p>
+                <p class="text-center">Current score will be lost.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick=request("new")>Ok</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick=request("new")>Ok</button>
             </div>
         </div>
     </div>

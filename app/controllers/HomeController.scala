@@ -63,9 +63,21 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.othello(gameController))
   }
 
+  def boardJson: Action[AnyContent] = Action {
+    Ok(gameController.boardJson)
+  }
+
   def difficulty(dif: String): Action[AnyContent] = Action {
     gameController.setDifficulty(dif)
     Ok(views.html.othello(gameController))
+  }
+
+  def count(colorValue: String): Action[AnyContent] = Action {
+    Ok(gameController.count(colorValue.toInt).toString)
+  }
+
+  def getDifficulty: Action[AnyContent] = Action {
+    Ok(gameController.difficulty)
   }
 
   def processInputLine: String => Unit = {

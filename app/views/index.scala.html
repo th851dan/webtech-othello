@@ -1,11 +1,11 @@
 @()
 
 @main("Welcome to Othello") {
-  @navbar()
-  <div class="landing-page d-flex justify-content-center align-items-center">
-      <a class="d-inline-block text-center text-decoration-none" onclick=request("new")>
-        <i id="play-button" class="fa fa-play-circle-o"></i>
-      <span>NEW GAME</span>
-      </a>
-  </div>
+    @navbar()
+    <div class="landing-page d-flex justify-content-center align-items-center">
+        <a class="d-inline-block text-center text-decoration-none" href="@routes.HomeController.newGame()">
+            <i id="play-button" class="fa fa-play-circle-o"></i>
+            <span>NEW GAME</span>
+        </a>
+    </div>
 }

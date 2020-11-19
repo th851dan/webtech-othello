@@ -14,19 +14,19 @@
             <button type="button" role="button" class="btn btn-light w-100" onclick=request("hint")>Hint</button>
         </li>
         <li class="nav-item">
-            <button type="button" role="button" class="btn btn-light dropdown-toggle w-100" data-toggle="collapse" data-target="#difficulty" aria-haspopup="true" aria-expanded="false">
+            <button type="button" role="button" class="btn btn-light dropdown-toggle w-100" data-toggle="collapse" data-target="#difficulty" aria-haspopup="false" aria-expanded="false">
                 Difficulty
             </button>
             <div class="collapse collapsible-panel" id="difficulty">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <button type="button" role="button" class="btn w-100" id="e" onclick=request("difficulty/e")>Easy</button>
+                        <button id="Easy" type="button" role="button" class="btn w-100" data-toggle="collapse" data-target="#difficulty" onclick=request("difficulty/e")>Easy</button>
                     </li>
                     <li class="nav-item">
-                        <button type="button" role="button" class="btn w-100" id="m" onclick=request("difficulty/m")>Normal</button>
+                        <button id="Normal" type="button" role="button" class="btn w-100" data-toggle="collapse" data-target="#difficulty" onclick=request("difficulty/m")>Normal</button>
                     </li>
-                    <li>
-                        <button type="button" role="button" class="btn w-100" id="d" onclick=request("difficulty/d")>Hard</button>
+                    <li class="nav-item">
+                        <button id="Hard" type="button" role="button" class="btn w-100" data-toggle="collapse" data-target="#difficulty" onclick=request("difficulty/d")>Hard</button>
                     </li>
                 </ul>
             </div>

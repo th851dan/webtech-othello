@@ -25,11 +25,11 @@
                 <tr>
                     <th class ="row-header text-center">@{row + 1}</th>
                     @for(col <- 0 until size) {
-                        <td class="cell text-center border border-dark" id="@{col}@{row}" onclick="set(@{col}, @{row})"></td>
+                        <td class="cell text-center border border-dark" id="@{col}@{row}"></td>
                     }
                 </tr>
             }
         </table>
-        <div id="difficulty-div">@controller.difficulty</div>
+        <div id="difficulty-div"></div>
     </div>
 }

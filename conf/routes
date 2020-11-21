@@ -15,8 +15,9 @@ GET     /hint                       controllers.HomeController.hint
 GET     /undo                       controllers.HomeController.undo
 GET     /redo                       controllers.HomeController.redo
 GET     /difficulty/:dif            controllers.HomeController.difficulty(dif)
-GET     /boardjson                  controllers.HomeController.boardJson
+GET     /boardJson                  controllers.HomeController.boardJson
 GET     /count/:colorValue          controllers.HomeController.count(colorValue)
-GET     /getdifficulty              controllers.HomeController.getDifficulty
+GET     /getDifficulty              controllers.HomeController.getDifficulty
+GET     /getGameOver                 controllers.HomeController.getGameOver
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

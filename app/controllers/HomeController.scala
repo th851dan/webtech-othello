@@ -80,6 +80,10 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(gameController.difficulty)
   }
 
+  def getGameOver: Action[AnyContent] = Action {
+    Ok(gameController.gameOver.toString)
+  }
+
   def processInputLine: String => Unit = {
     input => input.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)").toList match {
       case col :: row :: Nil =>

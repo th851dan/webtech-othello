@@ -24,13 +24,17 @@ document.onreadystatechange = () => {
             $('#sidebar').addClass('show');
         }
     }
+    // prevent from loading multiple times
+    if (document.readyState === "complete") {
+        checkWidth();
+        updateUI();
+        updateDifficulty();
 
-    checkWidth();
-    updateUI();
-    updateDifficulty();
-
-    $(window).resize(checkWidth);
+        $(window).resize(checkWidth);
+    }
 };
+
+$('#new-game-btn').click(() => fetch("new").then(() => location.href = "othello"));
 
 /**
  * Fetches a resource and updates the UI.
@@ -77,7 +81,6 @@ function set(col, row) {
  * Fetches a JSON object containing information about the game's current state and repaints the UI accordingly.
  */
 function updateUI() {
-    window.history.pushState( null, null,"/othello");
     fetch( "boardJson")
         .then(response => response.json())
         .then(repaintBoard);
@@ -104,6 +107,8 @@ function repaintBoard(board) {
                 const child = document.createElement("img");
                 child.setAttribute("src", "assets/images/" + square.value + ".png");
                 child.setAttribute("class", "flip-tile");
+                child.setAttribute("alt", square.value === 1 ? "●" : "○");
+                child.setAttribute("draggable", "false");
                 element.appendChild(child);
             } else if (square.value < 0) {
                 const child = document.createElement("span");
@@ -134,14 +139,13 @@ function checkForGameOver() {
  * Displays a modal when the game finishes.
  */
 function showGameOverPopup() {
-    const $black = parseInt($("#black-tiles").text());
-    const $white = parseInt($("#white-tiles").text());
+    const black = parseInt($("#black-tiles").text());
+    const white = parseInt($("#white-tiles").text());
     const $title = $('#game-over-title');
-    if ($black !== $white) {
-        const $winner = $('#winner');
-        const winnerValue = $black > $white ? 1 : 2;
+    if (black !== white) {
+        const winnerValue = black > white ? 1 : 2;
         $title.text(winnerValue === 1 ? "Black wins!" : "White wins!")
-        $winner.attr('src', "assets/images/" + winnerValue + ".png");
+        $('#winner').attr('src', "assets/images/" + winnerValue + ".png");
     } else {
         $title.text("Game over");
     }

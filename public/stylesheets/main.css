@@ -3,18 +3,18 @@
     font-size: 250%;
 }
 
-.landing-page a {
+.landing-page > div {
     text-shadow: 1px 1px 2px rgba(10, 10, 10, 0.5);
     color: #818181;
 }
 
-.landing-page a:hover {
+.landing-page > div:hover {
     transform: scale(1.1);
     transition: all 0.3s ease;
     animation: forwards;
 }
 
-.landing-page #play-button {
+.landing-page > div #play-button {
     font-size: 120%;
     color: #5b9628;
 }
@@ -52,21 +52,12 @@
 }
 
 .rules {
-    text-align: justify;
-    width: 80%;
     background-color: #aaaaaa;
     box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.3), 0 3px 10px 0 rgba(0, 0, 0, 0.29);
-    margin: auto;
-}
-
-.rules > .content {
-    padding: 50px 50px 50px 50px;
 }
 
 .rules > .content img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+    width: 500px;
 }
 
 .sidenav {
@@ -158,22 +149,27 @@
     }
 
     .game-table .cell img {
-        width: 30px;
-        height: 30px;
+        width: 32px;
+        height: 32px;
     }
 
     .game-table .cell .dot {
         height: 20px;
         width: 20px;
     }
+    .rules > .content img {
+        width: 75%;
+    }
 }
 
 @keyframes flip {
     0% {
         transform: rotateY(0deg);
+        -webkit-transform: translate3D(0px, 0px, -20px) rotateY(0deg);
     }
     100% {
         transform: rotateY(180deg);
+        -webkit-transform: translate3D(0px, 0px, -20px) rotateY(180deg);
     }
 }
 
@@ -230,4 +226,14 @@
 
 .jelly-dot {
     animation: jelly ease 0.5s;
+}
+
+.float {
+    width: 4rem;
+    height: 4rem;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: rgba(80,90,100,0.7);
+    color:#FFF;
+    box-shadow: 2px 2px 5px #3c3c3c;
 }

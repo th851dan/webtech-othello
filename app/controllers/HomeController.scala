@@ -1,17 +1,21 @@
 package controllers
 
+import akka.actor.{Actor, ActorRef, ActorSystem, Props}
+import akka.stream.Materializer
 import com.google.inject.{Guice, Injector}
 import de.htwg.se.othello.{BoardModuleServer, OthelloModule, UserModuleServer}
 import de.htwg.se.othello.controller.controllerComponent.ControllerInterface
+import de.htwg.se.othello.util.Observer
 import javax.inject._
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
+import play.api.libs.streams.ActorFlow
 import play.api.mvc._
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
 @Singleton
-class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
+class HomeController @Inject()(controllerComponents: ControllerComponents)(implicit system: ActorSystem, mat: Materializer) extends AbstractController(controllerComponents) {
 
   val startBoardServer: Unit = BoardModuleServer.main(null)
   val startUserServer: Unit = UserModuleServer.main(null)
@@ -90,6 +94,26 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
         val square = (col.charAt(0).toUpper - 65, row.toInt- 1)
         gameController.set(square)
       case _ =>
+    }
+  }
+
+  def socket: WebSocket = WebSocket.accept[String, String] { _ =>
+    ActorFlow.actorRef {
+      out => Props(new OthelloWebSocketActor(out))
+    }
+  }
+
+  class OthelloWebSocketActor(out: ActorRef) extends Actor with Observer {
+
+    gameController.add(this)
+
+    override def update: Boolean = {
+      out ! gameController.boardJson
+      true
+    }
+
+    def receive: Receive = {
+      case _: String => out ! gameController.boardJson
     }
   }
 }

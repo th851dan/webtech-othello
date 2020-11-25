@@ -3,13 +3,12 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
-# An example controller showing a sample home page
 GET     /                           controllers.HomeController.index
 GET     /othello                    controllers.HomeController.othello
 GET     /currentplayer              controllers.HomeController.currentPlayer
 GET     /resize/:op                 controllers.HomeController.resizeBoard(op)
 GET     /new                        controllers.HomeController.newGame
-GET     /set/:pos                   controllers.HomeController.set(pos)
+POST    /set/:pos                   controllers.HomeController.set(pos)
 GET     /rules                      controllers.HomeController.rules
 GET     /hint                       controllers.HomeController.hint
 GET     /undo                       controllers.HomeController.undo
@@ -18,6 +17,8 @@ GET     /difficulty/:dif            controllers.HomeController.difficulty(dif)
 GET     /boardJson                  controllers.HomeController.boardJson
 GET     /count/:colorValue          controllers.HomeController.count(colorValue)
 GET     /getDifficulty              controllers.HomeController.getDifficulty
-GET     /getGameOver                 controllers.HomeController.getGameOver
+GET     /getGameOver                controllers.HomeController.getGameOver
+GET     /websocket                  controllers.HomeController.socket
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

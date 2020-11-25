@@ -26,10 +26,9 @@ document.onreadystatechange = () => {
     }
     // prevent from loading multiple times
     if (document.readyState === "complete") {
+        connectWebSocket();
         checkWidth();
-        updateUI();
         updateDifficulty();
-
         $(window).resize(checkWidth);
     }
 };
@@ -37,12 +36,10 @@ document.onreadystatechange = () => {
 $('#new-game-btn').click(() => fetch("new").then(() => location.href = "othello"));
 
 /**
- * Fetches a resource and updates the UI.
+ * Fetches a resource.
  * @param {String} endpoint - Resource that is fetched
  */
-function request(endpoint) {
-    fetch(endpoint).then(updateUI);
-}
+const request = async (endpoint) => await fetch(endpoint);
 
 /**
  * Sets the desired difficulty level.
@@ -70,20 +67,10 @@ function updateDifficulty() {
  * @param col {Number} - column in the board
  * @param row {Number} - row in the board
  */
-function set(col, row) {
+async function set(col, row) {
     const x = String.fromCharCode(col + 65);
     const y = 1 + row;
-    fetch("set/" + x + y).then(updateUI);
-    setTimeout(updateUI, 100);
-}
-
-/**
- * Fetches a JSON object containing information about the game's current state and repaints the UI accordingly.
- */
-function updateUI() {
-    fetch( "boardJson")
-        .then(response => response.json())
-        .then(repaintBoard);
+    await fetch("set/" + x + y, { method: "POST"});
 }
 
 /**
@@ -97,24 +84,24 @@ function repaintBoard(board) {
             return;
         }
         element.onclick = () => set(square.row, square.col);
-        element.childNodes.forEach(e => {
-            if (square.value === 0 || (square.value < 0 && e.src) || (square.value > 0 && (!e.src || !e.src.includes(square.value.toString())))) {
-                e.remove();
-            }
-        })
-        if (element.childNodes.length === 0) {
-            if (square.value > 0) {
-                const child = document.createElement("img");
-                child.setAttribute("src", "assets/images/" + square.value + ".png");
-                child.setAttribute("class", "flip-tile");
-                child.setAttribute("alt", square.value === 1 ? "●" : "○");
-                child.setAttribute("draggable", "false");
+        const oldChild = element.firstChild;
+        if (square.value === 0 && oldChild !== null) {
+            oldChild.remove();
+        } else if (square.value > 0) {
+            const child = document.createElement("img");
+            child.setAttribute("src", "assets/images/" + square.value + ".png");
+            child.setAttribute("class", "flip-tile");
+            child.setAttribute("alt", square.value === 1 ? "●" : "○");
+            child.setAttribute("draggable", "false");
+            if (oldChild === null) {
                 element.appendChild(child);
-            } else if (square.value < 0) {
-                const child = document.createElement("span");
-                child.setAttribute("class", "dot d-inline-block rounded-circle mt-1 jelly-dot");
-                element.appendChild(child);
+            } else if (oldChild.src === null || oldChild.src !== child.src) {
+                element.replaceChild(child, oldChild);
             }
+        } else if (square.value < 0 && oldChild === null) {
+            const child = document.createElement("span");
+            child.setAttribute("class", "dot d-inline-block rounded-circle mt-1 jelly-dot");
+            element.appendChild(child);
         }
     });
     $("#black-tiles").text(board.squares.filter(e => e.value === 1).length);
@@ -150,4 +137,20 @@ function showGameOverPopup() {
         $title.text("Game over");
     }
     $('#game-over-modal').modal('show');
+}
+
+function connectWebSocket() {
+    const webSocket = new WebSocket("ws://localhost:9000/websocket")
+    console.info("Connecting to WebSocket...");
+
+    webSocket.onopen = () => {
+        console.info("Connected to server: " + webSocket.url);
+        webSocket.send("hello");
+    }
+    webSocket.onmessage = message => {
+        const board = JSON.parse(message.data);
+        repaintBoard(board);
+    }
+    webSocket.onerror = event => console.error(event);
+    webSocket.onclose = () => setTimeout(connectWebSocket, 2000);
 }

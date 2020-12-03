@@ -36,6 +36,11 @@ document.onreadystatechange = () => {
 
 let webSocket = new WebSocket("ws://localhost:9000/websocket");
 
+/**
+ * Connect or reconnect to server with websocket.
+ *
+ */
+
 function connectWebSocket() {
     if (webSocket.readyState === WebSocket.CLOSED){
         webSocket = new WebSocket("ws://localhost:9000/websocket")
@@ -50,10 +55,20 @@ function connectWebSocket() {
     webSocket.onclose = () => setTimeout(connectWebSocket, 2000);
 }
 
+/**
+ * Do this after the websocket is opened.
+ *
+ */
+
 function webSocketOnOpen() {
     console.info("Connected to server: " + webSocket.url);
     webSocket.send("hello");
 }
+
+/**
+ * Get the message from server through websocket and do what was told.
+ * @param {String} message - The JSON string message
+ */
 
 function webSocketOnMessage(message){
     try {
@@ -88,14 +103,23 @@ function webSocketOnMessage(message){
     } catch (e) {
         console.error(e)
     }
-    //repaintBoard(json);
 }
 
 $('#new-game-btn').click(() => request("loadnew"));
 
 /**
- * Fetches a resource.
- * @param {String} endpoint - Resource that is fetched
+ * Catch the change of the game status and react accordingly.
+ *
+ */
+
+function OnStatusChanged(old, newStatus) {
+    if (newStatus === "GAME_OVER")
+        setTimeout(showGameOverPopup, 500);
+}
+
+/**
+ * Request a resource by sending the request with websocket.
+ * @param {String} endpoint - Resource that is requested
  */
 
 const request = (endpoint) => {
@@ -109,11 +133,6 @@ const request = (endpoint) => {
     else
         webSocket.send(endpoint);
 };
-
-function OnStatusChanged(old, newStatus) {
-    if (newStatus === "GAME_OVER")
-        setTimeout(showGameOverPopup, 500);
-}
 
 /**
  * Sets the desired difficulty level.
@@ -176,21 +195,8 @@ function repaintBoard(board) {
     });
     $("#black-tiles").text(board.squares.filter(e => e.value === 1).length);
     $("#white-tiles").text(board.squares.filter(e => e.value === 2).length);
-    //checkForGameOver();
 }
 
-/**
- * Checks if the current game is finished and displays a popup if so.
- */
-function checkForGameOver() {
-    fetch("getGameOver")
-        .then(response => response.text())
-        .then(text => {
-            if (text.toString() === "true") {
-                setTimeout(showGameOverPopup, 500);
-            }
-        });
-}
 
 /**
  * Displays a modal when the game finishes.

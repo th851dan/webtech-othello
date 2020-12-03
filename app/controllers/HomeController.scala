@@ -3,16 +3,18 @@ package controllers
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.stream.Materializer
 import com.google.inject.{Guice, Injector}
-import de.htwg.se.othello.{BoardModuleServer, OthelloModule, UserModuleServer}
 import de.htwg.se.othello.controller.controllerComponent.ControllerInterface
-import de.htwg.se.othello.util.Observer
-import javax.inject._
+import de.htwg.se.othello.controller.controllerComponent.controllerMockImpl.{BoardChanged, DifficultyChanged, GameStatusChanged, NewGameCreated}
+import de.htwg.se.othello.{BoardModuleServer, OthelloModule, UserModuleServer}
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
+import play.api.libs.json.{JsObject, Json}
 import play.api.libs.streams.ActorFlow
 import play.api.mvc._
 
+import javax.inject._
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
+import scala.swing.Reactor
 
 @Singleton
 class HomeController @Inject()(controllerComponents: ControllerComponents)(implicit system: ActorSystem, mat: Materializer) extends AbstractController(controllerComponents) {
@@ -103,16 +105,40 @@ class HomeController @Inject()(controllerComponents: ControllerComponents)(impli
     }
   }
 
-  class OthelloWebSocketActor(out: ActorRef) extends Actor with Observer {
+  class OthelloWebSocketActor(out: ActorRef) extends Actor with Reactor{
+    listenTo(gameController)
+    reactions += {
+      case _: NewGameCreated  =>
+        out ! buildJsObject("game-created", gameController.boardJson)
+      case _: BoardChanged    =>
+        out ! buildJsObject("board-changed", gameController.boardJson)
+      case event: DifficultyChanged =>
+        out ! buildJsObject("difficulty-changed", Json.obj("difficulty" -> event.difficulty).toString)
+      case event: GameStatusChanged =>
+        out ! buildJsObject("from", Json.obj("to" -> event.to).toString)
+    }
 
-    gameController.add(this)
-
-    override def update: Boolean = {
-      out ! gameController.boardJson
-      true
+    def buildJsObject(event: String, objectToDeliver: String) = {
+      val eventObject = "event" -> Json.toJson(event)
+      (Json.parse(objectToDeliver).as[JsObject] + eventObject).toString
     }
 
     def receive: Receive = {
+      case "new"      => Await.result(gameController.newGame, Duration.Inf)
+      case "undo"     => gameController.undo()
+      case "redo"     => gameController.redo()
+      case "hint"     => gameController.highlight()
+      
+      case changeDif : String if changeDif.contains("difficulty/") =>
+        gameController.setDifficulty((changeDif.split('/').last))
+      case setCell : String if setCell.contains("set/") => {
+        setCell.split('/').last.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)").toList match {
+          case col :: row :: Nil =>
+            val square = (col.charAt(0).toUpper - 65, row.toInt- 1)
+            gameController.set(square)
+          case _ =>
+        }
+      }
       case _: String => out ! gameController.boardJson
     }
   }

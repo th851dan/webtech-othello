@@ -33,33 +33,67 @@ document.onreadystatechange = () => {
     }
 };
 
-$('#new-game-btn').click(() => fetch("new").then(() => location.href = "othello"));
+let webSocket = new WebSocket("ws://localhost:9000/websocket");
+
+function connectWebSocket() {
+    if (webSocket.readyState === WebSocket.CLOSED){
+        webSocket = new WebSocket("ws://localhost:9000/websocket")
+    }
+    console.info("Connecting to WebSocket...");
+
+    webSocket.onopen = () => {
+        console.info("Connected to server: " + webSocket.url);
+        webSocket.send("hello");
+    }
+
+    webSocket.onmessage = message => webSocketOnMessage(message)
+
+    webSocket.onerror = event => console.error(event);
+    webSocket.onclose = () => setTimeout(connectWebSocket, 2000);
+}
+
+function webSocketOnMessage(message){
+    const newMes = message.data;
+    const json = JSON.parse(message.data);
+    switch(json.event) {
+        case "game-created":
+            repaintBoard(json)
+            location.href = "othello";
+            break;
+        case "board-changed":
+            repaintBoard(json);
+            break;
+        case "difficulty-changed":
+            updateDifficulty(json.difficulty);
+            break;
+    }
+    //repaintBoard(json);
+}
+
+$('#new-game-btn').click(() => request("new"));
 
 /**
  * Fetches a resource.
  * @param {String} endpoint - Resource that is fetched
  */
-const request = async (endpoint) => await fetch(endpoint);
+
+const request = (endpoint) => webSocket.send(endpoint);
 
 /**
  * Sets the desired difficulty level.
  * @param {String} difficulty - The desired difficulty
  */
 function changeDifficulty(difficulty) {
-    fetch("difficulty/" + difficulty).then(updateDifficulty);
+    request("difficulty/" + difficulty)/*.then(updateDifficulty)*/;
 }
 
 /**
  * Updates elements within the page that react to difficulty changes.
  */
-function updateDifficulty() {
-    fetch("getDifficulty")
-        .then(response => response.text())
-        .then(difficulty => {
-            ["Easy", "Normal", "Hard"].forEach(d => $('#' + d).removeClass("active text-body"));
-            $('#' + difficulty).addClass("active text-body");
-            $("#difficulty-div").text(difficulty);
-        });
+function updateDifficulty(difficulty) {
+    ["Easy", "Normal", "Hard"].forEach(d => $('#' + d).removeClass("active text-body"));
+    $('#' + difficulty).addClass("active text-body");
+    $("#difficulty-div").text(difficulty);
 }
 
 /**
@@ -67,10 +101,10 @@ function updateDifficulty() {
  * @param col {Number} - column in the board
  * @param row {Number} - row in the board
  */
-async function set(col, row) {
+function set(col, row) {
     const x = String.fromCharCode(col + 65);
     const y = 1 + row;
-    await fetch("set/" + x + y, { method: "POST"});
+    request("set/" + x + y);
 }
 
 /**
@@ -106,7 +140,7 @@ function repaintBoard(board) {
     });
     $("#black-tiles").text(board.squares.filter(e => e.value === 1).length);
     $("#white-tiles").text(board.squares.filter(e => e.value === 2).length);
-    checkForGameOver();
+    //checkForGameOver();
 }
 
 /**
@@ -139,18 +173,3 @@ function showGameOverPopup() {
     $('#game-over-modal').modal('show');
 }
 
-function connectWebSocket() {
-    const webSocket = new WebSocket("ws://localhost:9000/websocket")
-    console.info("Connecting to WebSocket...");
-
-    webSocket.onopen = () => {
-        console.info("Connected to server: " + webSocket.url);
-        webSocket.send("hello");
-    }
-    webSocket.onmessage = message => {
-        const board = JSON.parse(message.data);
-        repaintBoard(board);
-    }
-    webSocket.onerror = event => console.error(event);
-    webSocket.onclose = () => setTimeout(connectWebSocket, 2000);
-}

@@ -34,6 +34,11 @@ document.onreadystatechange = () => {
 
 let webSocket;
 
+/**
+ * Connect or reconnect to server with websocket.
+ *
+ */
+
 function connectWebSocket() {
     webSocket = new WebSocket("ws://localhost:9000/websocket")
     console.info("Connecting to WebSocket...");

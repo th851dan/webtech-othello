@@ -34,6 +34,10 @@ class HomeController @Inject()(controllerComponents: ControllerComponents)(impli
     Ok(views.html.othello(gameController))
   }
 
+  def polymer: Action[AnyContent] = Action {
+    Ok(views.html.polymer())
+  }
+
   def currentPlayer: Action[AnyContent] = Action {
     Ok(gameController.currentPlayer.toString)
   }

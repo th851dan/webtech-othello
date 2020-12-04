@@ -19,6 +19,7 @@ GET     /count/:colorValue          controllers.HomeController.count(colorValue)
 GET     /getDifficulty              controllers.HomeController.getDifficulty
 GET     /getGameOver                controllers.HomeController.getGameOver
 GET     /websocket                  controllers.HomeController.socket
+GET     /polymer                    controllers.HomeController.polymer
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

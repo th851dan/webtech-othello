@@ -1,0 +1,7 @@
+{
+  "name": "othello",
+  "short_name": "othello",
+  "description": "Othello with web components by polymer",
+  "start_url": "/",
+  "display": "standalone"
+}

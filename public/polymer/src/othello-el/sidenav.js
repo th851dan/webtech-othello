@@ -1,12 +1,16 @@
-import {html, PolymerElement} from '../../node_modules/@polymer/polymer/polymer-element.js';
+import { html, PolymerElement } from '../../node_modules/@polymer/polymer/polymer-element.js';
 /**
  * @customElement
  * @polymer
  */
 class Sidenav extends PolymerElement {
+    constructor() {
+        super();
+        document.onreadystatechange = () => this._showSidebar(this);
+    }
 
-  static get template() {
-    return html`
+    static get template() {
+        return html`
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-CuOF+2SnTUfTwSZjCXf01h7uYhfOBuxIhGKPbfEJ3+FqH/s6cIFN9bGr1HmAg4fQ" crossorigin="anonymous">
       <style>
         :host {
@@ -149,23 +153,46 @@ class Sidenav extends PolymerElement {
   </div>
   
     `;
-  }
-  static get properties() {
-    return {
-      prop1: {
-        type: String,
-        value: 'othello-app'
-      },
-    };
-  }
+    }
+    static get properties() {
+        return {
+            prop1: {
+                type: String,
+                value: 'othello-app'
+            },
+        };
+    }
 
-  show(e){
-    let difEl = this.shadowRoot.getElementById(e.currentTarget.dataset.target);
-    if(difEl.classList.contains("show"))
-        difEl.classList.remove("show");
-    else
-        difEl.classList.add("show");
-  }
+    _showSidebar(thisEl) {
+        function checkWidth(thisEl) {
+            if (thisEl.shadowRoot)
+            {
+                let sidebarEl = thisEl.shadowRoot.getElementById('sidebar');
+                if (window.innerWidth < 768)
+                    sidebarEl.classList.remove('show');
+                else
+                    sidebarEl.classList.add('show');
+            }
+        }
+        
+        if (document.readyState === "complete")
+        {
+            checkWidth(thisEl);
+            window.onresize = () => checkWidth(thisEl)
+        }
+        
+    }
+
+    show(e) {
+        let showEl = this.shadowRoot.getElementById(e.currentTarget.dataset.target);
+        if (showEl.classList.contains("show"))
+            showEl.classList.remove("show");
+        else
+            showEl.classList.add("show");
+    }
+
 }
+
+
 
 window.customElements.define('sidenav-el', Sidenav);

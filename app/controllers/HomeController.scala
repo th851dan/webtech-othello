@@ -36,7 +36,7 @@ class HomeController @Inject()(implicit system: ActorSystem) extends InjectedCon
   }
 
   def polymer: Action[AnyContent] = Action {
-    Ok(views.html.polymer())
+    Ok(views.html.polymer(gameController))
   }
 
   def currentPlayer: Action[AnyContent] = Action {

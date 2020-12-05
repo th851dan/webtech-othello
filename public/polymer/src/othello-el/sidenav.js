@@ -6,7 +6,7 @@ import { html, PolymerElement } from '../../node_modules/@polymer/polymer/polyme
 class Sidenav extends PolymerElement {
     constructor() {
         super();
-        document.onreadystatechange = () => this._showSidebar(this);
+        document.onreadystatechange = () => this._showSidebar(this.shadowRoot);
     }
 
     static get template() {
@@ -163,22 +163,25 @@ class Sidenav extends PolymerElement {
         };
     }
 
-    _showSidebar(thisEl) {
-        function checkWidth(thisEl) {
-            if (thisEl.shadowRoot)
-            {
-                let sidebarEl = thisEl.shadowRoot.getElementById('sidebar');
-                if (window.innerWidth < 768)
-                    sidebarEl.classList.remove('show');
-                else
-                    sidebarEl.classList.add('show');
-            }
-        }
-        
-        if (document.readyState === "complete")
+    _showSidebar(thisShadowRoot) {
+        if(thisShadowRoot)
         {
-            checkWidth(thisEl);
-            window.onresize = () => checkWidth(thisEl)
+            function checkWidth(thisShadowRoot) {
+                if (thisShadowRoot)
+                {
+                    let sidebarEl = thisShadowRoot.getElementById('sidebar');
+                    if (window.innerWidth < 768)
+                        sidebarEl.classList.remove('show');
+                    else
+                        sidebarEl.classList.add('show');
+                }
+            }
+            
+            if (document.readyState === "complete")
+            {
+                checkWidth(thisShadowRoot);
+                window.onresize = () => checkWidth(thisShadowRoot)
+            }
         }
         
     }

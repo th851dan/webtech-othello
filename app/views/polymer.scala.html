@@ -17,6 +17,11 @@
         <script type="module" src="@routes.Assets.versioned("polymer/src/othello-app/othello-app.js")" crossorigin></script>
     </head>
     <body>
-        <othello-app size="@size"></othello-app>
+        <othello-app size="@size"
+        image1="@routes.Assets.versioned("images/1.png")"
+        image2="@routes.Assets.versioned("images/2.png")"
+        picbackground="@routes.Assets.versioned("images/back.jpg")">
+
+        </othello-app>
     </body>
 </html>

@@ -1,4 +1,5 @@
-import {html, PolymerElement} from '../../node_modules/@polymer/polymer/polymer-element.js';
+import { html, PolymerElement } from '../../node_modules/@polymer/polymer/polymer-element.js';
+import {} from '../../node_modules/@polymer/polymer/lib/elements/dom-repeat.js';
 import '../othello-el/navbar.js'
 import '../othello-el/sidenav.js'
 
@@ -7,8 +8,8 @@ import '../othello-el/sidenav.js'
  * @polymer
  */
 class OthelloApp extends PolymerElement {
-  static get template() {
-    return html`
+    static get template() {
+        return html`
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-CuOF+2SnTUfTwSZjCXf01h7uYhfOBuxIhGKPbfEJ3+FqH/s6cIFN9bGr1HmAg4fQ" crossorigin="anonymous">
       <style>
         :host {
@@ -157,41 +158,104 @@ class OthelloApp extends PolymerElement {
       <div class="d-table m-auto pt-3">
         <div class="row m-2">
             <div class="col text-center h-100">
-                <img src="/assets/images/1.png")" alt="●" draggable="false"/>
+                <img id="img1" src="[[images1]]" alt="●" draggable="false"/>
                 <span class="h4 align-middle" id="black-tiles"></span>
             </div>
             <div class="col text-center h-100">
-                <img src="/assets/images/2.png")" alt="○" draggable="false"/>
+                <img id="img2" src={{images2}} alt="○" draggable="false"/>
                 <span class="h4 align-middle" id="white-tiles"></span>
             </div>
         </div>
-        <table class="game-table" style="background: url(@routes.Assets.versioned("images/back.jpg"))">
-            @for(row <- 0 until [[size]] + 1) {
+        <table class="game-table" style$="background: url({{picbackground}})">
+            <template is="dom-repeat" items="[[columnHeaders]]">
                 <th class="column-header text-center">
-                @if(row > 0) {@{(row + 64).toChar}}
+                    [[item]]
                 </th>
-            }
-            @for(row <- 0 until [[size]]) {
+            </template>
+            <template is="dom-repeat" items="[[rows]]" as="row">
                 <tr>
-                    <th class ="row-header text-center">@{row + 1}</th>
-                    @for(col <- 0 until [[size]]) {
-                        <td class="cell text-center border border-dark" id="@{col}@{row}"></td>
-                    }
+                    <th class ="row-header text-center">[[row.header]]</th>
+                    <template is="dom-repeat" items="[[row.position]]">
+                        <td class="cell text-center border border-dark" id="[[item]]"></td>
+                    </template>
                 </tr>
-            }
+            </template>
         </table>
         <div id="difficulty-div"></div>
     </div>
     `;
-  }
-  static get properties() {
-    return {
-      size: {
-        type: Number,
-        value: 7
-      }
-    };
-  }
+    }
+    static get properties() {
+        return {
+            size: {
+                type: Number,
+                value: 7,
+                observer: 'sizeChanged',
+            },
+
+            image1: {
+                type: String,
+                observer: 'changeSource'
+            },
+
+            image2: {
+                type: String,
+                observer: 'changeSource'
+            },
+            picbackground: {
+                type: String,
+            },
+
+            columnHeaders: {
+                type: Array,
+                value() {
+                    return Array(this.size + 1).fill().map((_, index) => {
+                        if (index > 0)
+                            return String.fromCharCode(index + 64);;
+                        return '';
+                    });
+                }
+            },
+
+            rowheaders: {
+                type: Array,
+                computed: 'computeRowheaders(size)',
+            },
+
+            rows: {
+                type: Array,
+            }
+
+        }
+    }
+
+    changeSource(newValue, oldValue) {
+        let pic = newValue.includes('1') ? '1' : '2';
+        this.shadowRoot.getElementById('img' + pic).setAttribute('src', newValue);
+    }
+
+    updateColumnHeaders(size){
+        this.columnHeaders = Array(size + 1).fill().map((_, index) => {
+            if (index > 0)
+                return String.fromCharCode(index + 64);;
+            return '';
+        });
+    }
+
+    sizeChanged(newValue, oldValue){
+        this.updateColumnHeaders(newValue);
+        this.updateCells(newValue);
+    }
+
+    updateCells(size){
+        let rowHeaders = Array(size).fill().map((_, index) => index + 1);
+        let cells = rowHeaders.map(h => {
+            return {header: h, position: Array(size).fill().map((_, index) => (h-1) + '' + index)}
+        })
+
+        this.rows = cells;
+    }
+
 }
 
 window.customElements.define('othello-app', OthelloApp);

@@ -14,7 +14,6 @@
  */
 
 document.onreadystatechange = () => {
-    console.log("first websocket readystate: ", webSocket.readyState)
     const $window = $(window);
 
     function checkWidth() {
@@ -29,20 +28,20 @@ document.onreadystatechange = () => {
     if (document.readyState === "complete") {
         connectWebSocket();
         checkWidth();
-        request("getdifficulty");
         $(window).resize(checkWidth);
     }
 };
 
-let webSocket = new WebSocket("ws://localhost:9000/websocket");
+let webSocket;
 
 function connectWebSocket() {
-    if (webSocket.readyState === WebSocket.CLOSED){
-        webSocket = new WebSocket("ws://localhost:9000/websocket")
-    }
+    webSocket = new WebSocket("ws://localhost:9000/websocket")
     console.info("Connecting to WebSocket...");
 
-    webSocket.onopen = () => webSocketOnOpen();
+    webSocket.onopen = () => {
+        console.info("Connected to server: " + webSocket.url);
+        webSocket.send("connect");
+    }
 
     webSocket.onmessage = message => webSocketOnMessage(message)
 
@@ -50,77 +49,49 @@ function connectWebSocket() {
     webSocket.onclose = () => setTimeout(connectWebSocket, 2000);
 }
 
-function webSocketOnOpen() {
-    console.info("Connected to server: " + webSocket.url);
-    webSocket.send("hello");
-}
-
-function webSocketOnMessage(message){
+function webSocketOnMessage(message) {
     try {
-        const json = JSON.parse(message.data);
-        switch (json.event) {
-            case "hello":
+        const { event, object } = JSON.parse(message.data);
+        switch (event) {
             case "board-changed":
-            case "board-highlight-changed":
-                repaintBoard(json)
-                break;
-            case "game-created":
-                //location.href = "othello";
-                repaintBoard(json)
-                break;
-            case "load-othello-page":
-                location.href = "othello";
+                repaintBoard(object)
                 break;
             case "difficulty-changed":
-            case "return-difficulty":
-                updateDifficulty(json.difficulty);
+                const { difficulty } = object;
+                updateDifficulty(difficulty);
                 break;
             case "game-status-changed":
-                OnStatusChanged(json.old, json.new);
+                const { new_status } = object;
+                if (new_status === "GAME_OVER") {
+                    setTimeout(showGameOverPopup, 500);
+                }
                 break;
-            case "unknow":
+            case "player-changed":
+                console.log(object)
                 break;
             default:
-                //repaintBoard(json)
+                console.error("Unknown message");
                 break;
         }
-        console.log("responsed to " + json.event)
     } catch (e) {
         console.error(e)
     }
-    //repaintBoard(json);
 }
 
-$('#new-game-btn').click(() => request("loadnew"));
+$('#new-game-btn').click(() => fetch("new").then(() => location.href = "othello"));
 
 /**
  * Fetches a resource.
  * @param {String} endpoint - Resource that is fetched
  */
-
-const request = (endpoint) => {
-    console.log("websocket readystate: ", webSocket.readyState)
-    if (webSocket.readyState !== WebSocket.OPEN)
-        webSocket.onopen = () => {
-            webSocketOnOpen();
-            webSocket.send(endpoint);
-        }
-
-    else
-        webSocket.send(endpoint);
-};
-
-function OnStatusChanged(old, newStatus) {
-    if (newStatus === "GAME_OVER")
-        setTimeout(showGameOverPopup, 500);
-}
+const request = (endpoint) => webSocket.send(endpoint);
 
 /**
  * Sets the desired difficulty level.
  * @param {String} difficulty - The desired difficulty
  */
 function changeDifficulty(difficulty) {
-    request("difficulty/" + difficulty)/*.then(updateDifficulty)*/;
+    request("difficulty/" + difficulty);
 }
 
 /**
@@ -176,20 +147,6 @@ function repaintBoard(board) {
     });
     $("#black-tiles").text(board.squares.filter(e => e.value === 1).length);
     $("#white-tiles").text(board.squares.filter(e => e.value === 2).length);
-    //checkForGameOver();
-}
-
-/**
- * Checks if the current game is finished and displays a popup if so.
- */
-function checkForGameOver() {
-    fetch("getGameOver")
-        .then(response => response.text())
-        .then(text => {
-            if (text.toString() === "true") {
-                setTimeout(showGameOverPopup, 500);
-            }
-        });
 }
 
 /**

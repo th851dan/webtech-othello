@@ -1,17 +1,16 @@
 package controllers
 
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
-import akka.stream.Materializer
 import com.google.inject.{Guice, Injector}
 import de.htwg.se.othello.controller.controllerComponent.ControllerInterface
-import de.htwg.se.othello.controller.controllerComponent.controllerMockImpl.{BoardChanged, BoardHighlightChanged, DifficultyChanged, GameStatusChanged, NewGameCreated}
+import de.htwg.se.othello.controller.controllerComponent.controllerMockImpl.{BoardChanged, CurrentPlayerChanged, DifficultyChanged, GameStatusChanged}
 import de.htwg.se.othello.{BoardModuleServer, OthelloModule, UserModuleServer}
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
-import play.api.libs.json.{JsObject, Json}
+import play.api.Logger
+import play.api.libs.json.{JsValue, Json}
 import play.api.libs.streams.ActorFlow
 import play.api.mvc._
 
-import java.util.{Timer, TimerTask}
 import javax.inject._
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
@@ -19,14 +18,16 @@ import scala.language.postfixOps
 import scala.swing.Reactor
 
 @Singleton
-class HomeController @Inject()(controllerComponents: ControllerComponents)(implicit system: ActorSystem, mat: Materializer) extends AbstractController(controllerComponents) {
+class HomeController @Inject()(implicit system: ActorSystem) extends InjectedController {
 
-  val startBoardServer: Unit = BoardModuleServer.main(null)
-  val startUserServer: Unit = UserModuleServer.main(null)
+  // Should be removed from HomeController and started individually
+  BoardModuleServer.main(Array.empty)
+  UserModuleServer.main(Array.empty)
+
   val injector: Injector = Guice.createInjector(new OthelloModule)
   val gameController: ControllerInterface = injector.instance[ControllerInterface]
 
-  def index: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+  def index: Action[AnyContent] = Action {
     Ok(views.html.index())
   }
 
@@ -107,64 +108,39 @@ class HomeController @Inject()(controllerComponents: ControllerComponents)(impli
     }
   }
 
-  class OthelloWebSocketActor(out: ActorRef) extends Actor with Reactor{
+  class OthelloWebSocketActor(out: ActorRef) extends Actor with Reactor {
+    val log: Logger = Logger(this.getClass.getName)
     listenTo(gameController)
     reactions += {
-      case _: NewGameCreated  =>
-        out ! buildJsObject("game-created", gameController.boardJson)
       case _: BoardChanged    =>
         out ! buildJsObject("board-changed", gameController.boardJson)
       case event: DifficultyChanged =>
         out ! buildJsObject("difficulty-changed", event.difficulty)
-      case event: BoardHighlightChanged =>
-        out ! buildJsObject("board-highlight-changed", event.moves)
       case event: GameStatusChanged =>
         out ! buildJsObject("game-status-changed", event.status)
-      case _ =>
-        out ! buildJsObject("unknow", gameController.boardJson)
+      case event: CurrentPlayerChanged =>
+        out ! buildJsObject("player-changed", event.player)
+      case other => log.warn("Unmanaged event: " + other.getClass.getName)
     }
 
-    def buildJsObject(event: String, objectToDeliver: String) = {
-      val eventObject = Json.obj("event" -> event)
-      if (objectToDeliver != null)
-        (Json.parse(objectToDeliver).as[JsObject] ++ eventObject).toString
-      else eventObject.toString
+    def buildJsObject(event: String, objectToDeliver: JsValue): String = {
+      Json.obj("event" -> event, "object" -> objectToDeliver).toString
     }
 
     def receive: Receive = {
+      case "connect"  =>
+        out ! buildJsObject("board-changed", gameController.boardJson)
+        out ! buildJsObject("difficulty-changed", Json.obj("difficulty" -> gameController.difficulty))
       case "new"      => gameController.newGame
       case "undo"     => gameController.undo()
       case "redo"     => gameController.redo()
       case "hint"     => gameController.highlight()
-      case "hello"    => out ! buildJsObject("hello", gameController.boardJson)
-      case "getdifficulty" => out ! buildJsObject("return-difficulty", Json.obj("difficulty" -> gameController.difficulty).toString)
-      case "loadnew"  => {
-        out ! buildJsObject("load-othello-page", null)
-        //After receiving "load-othello-page" message, location.href is set,
-        //the page is loaded again and a new websocket is created.
-        //At that point the "game-created" event might be execute faster before
-        //websocket load. So I need this delay here.
-        //Bug in Chrome: Repeat reloading the page to see the bug. (websocket??)
-        //Maybe the timer is too short
-        //
-        //Another solution?
-        new Timer().schedule(new TimerTask() {
-          override def run(): Unit = {
-            gameController.newGame
-          }
-        }, 200)
-      }
-      case changeDif : String if changeDif.contains("difficulty/") =>
-        gameController.setDifficulty((changeDif.split('/').last))
-      case setCell : String if setCell.contains("set/") => {
-        setCell.split('/').last.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)").toList match {
-          case col :: row :: Nil =>
-            val square = (col.charAt(0).toUpper - 65, row.toInt- 1)
-            gameController.set(square)
-          case _ =>
-        }
-      }
-      case _: String => out ! buildJsObject("unknow-received-message", gameController.boardJson)
+      case changeDif: String if changeDif.contains("difficulty/") =>
+        gameController.setDifficulty(changeDif.split('/').last)
+      case setCell: String if setCell.contains("set/") =>
+        val input = setCell.split('/').last
+        processInputLine(input)
+      case message => log.warn("Unknown message: " + message)
     }
   }
 }

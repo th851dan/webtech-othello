@@ -6,7 +6,9 @@ import { html, PolymerElement } from '../../node_modules/@polymer/polymer/polyme
 class Sidenav extends PolymerElement {
     constructor() {
         super();
-        document.onreadystatechange = () => this._showSidebar(this.shadowRoot);
+        document.addEventListener("readystatechange", () => {
+            this._showSidebar(this.shadowRoot);
+        });
     }
 
     static get template() {
@@ -72,7 +74,7 @@ class Sidenav extends PolymerElement {
     <nav class="sidenav collapse side-collapse bg-light position-fixed" id="sidebar">
       <ul class="navbar-nav">
           <li class="nav-item">
-              <button type="button" role="button" class="text-left btn btn-light w-100" data-toggle="modal" data-target="#new-game-modal">New Game</button>
+              <button type="button" role="button" class="text-left btn btn-light w-100" data-toggle="modal" on-click="showNewGameModal" data-target="#new-game-modal">New Game</button>
           </li>
           <li class="nav-item">
               <button type="button" role="button" class="text-left btn btn-light w-100" onclick=request("undo")>Undo</button>
@@ -118,54 +120,11 @@ class Sidenav extends PolymerElement {
           </li>
       </ul>
   </nav>
-  <div class="modal fade" tabindex="-1" role="dialog" id="new-game-modal" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title">Start new game?</h5>
-              </div>
-              <div class="modal-body">
-                  <p class="text-center">Current score will be lost.</p>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
-                  <button type="button" class="btn btn-primary" data-dismiss="modal" onclick=request("new")>Ok</button>
-              </div>
-          </div>
-      </div>
-  </div>
-  <div class="modal fade" tabindex="-2" role="dialog" id="game-over-modal" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-              <div class="modal-header text-center">
-                  <h5 class="modal-title" id="game-over-title"></h5>
-              </div>
-              <div class="modal-body" id="game-over-body">
-                  <p class="text-center jump-class"><img id="winner" src="" alt=""></p>
-                  <p class="text-center">Start new game?</p>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary" data-dismiss="modal" onclick=request("new")>Ok</button>
-              </div>
-          </div>
-      </div>
-  </div>
-  
     `;
-    }
-    static get properties() {
-        return {
-            prop1: {
-                type: String,
-                value: 'othello-app'
-            },
-        };
     }
 
     _showSidebar(thisShadowRoot) {
-        if(thisShadowRoot)
-        {
+        if (thisShadowRoot) {
             function checkWidth(thisShadowRoot) {
                 if (thisShadowRoot)
                 {
@@ -177,25 +136,22 @@ class Sidenav extends PolymerElement {
                 }
             }
             
-            if (document.readyState === "complete")
-            {
+            if (document.readyState === "complete") {
                 checkWidth(thisShadowRoot);
                 window.onresize = () => checkWidth(thisShadowRoot)
             }
         }
-        
     }
 
     show(e) {
-        let showEl = this.shadowRoot.getElementById(e.currentTarget.dataset.target);
-        if (showEl.classList.contains("show"))
-            showEl.classList.remove("show");
-        else
-            showEl.classList.add("show");
+        let showEl = $(this.shadowRoot.getElementById(e.currentTarget.dataset.target));
+        showEl.collapse('toggle');
+    }
+
+    showNewGameModal() {
+        $('#new-game-modal').modal('show');
     }
 
 }
-
-
 
 window.customElements.define('sidenav-el', Sidenav);

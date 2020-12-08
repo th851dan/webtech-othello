@@ -2,6 +2,7 @@ import { html, PolymerElement } from '../../node_modules/@polymer/polymer/polyme
 import {} from '../../node_modules/@polymer/polymer/lib/elements/dom-repeat.js';
 import '../othello-el/navbar.js'
 import '../othello-el/sidenav.js'
+import '../othello-el/header.js'
 
 /**
  * @customElement
@@ -158,11 +159,11 @@ class OthelloApp extends PolymerElement {
       <div class="d-table m-auto pt-3">
         <div class="row m-2">
             <div class="col text-center h-100">
-                <img id="img1" src="[[images1]]" alt="●" draggable="false"/>
+                <img id="img1" src="[[image1]]" alt="●" draggable="false"/>
                 <span class="h4 align-middle" id="black-tiles"></span>
             </div>
             <div class="col text-center h-100">
-                <img id="img2" src={{images2}} alt="○" draggable="false"/>
+                <img id="img2" src={{image2}} alt="○" draggable="false"/>
                 <span class="h4 align-middle" id="white-tiles"></span>
             </div>
         </div>
@@ -211,7 +212,7 @@ class OthelloApp extends PolymerElement {
                 value() {
                     return Array(this.size + 1).fill().map((_, index) => {
                         if (index > 0)
-                            return String.fromCharCode(index + 64);;
+                            return String.fromCharCode(index + 64);
                         return '';
                     });
                 }
@@ -237,7 +238,7 @@ class OthelloApp extends PolymerElement {
     updateColumnHeaders(size){
         this.columnHeaders = Array(size + 1).fill().map((_, index) => {
             if (index > 0)
-                return String.fromCharCode(index + 64);;
+                return String.fromCharCode(index + 64);
             return '';
         });
     }
@@ -249,11 +250,9 @@ class OthelloApp extends PolymerElement {
 
     updateCells(size){
         let rowHeaders = Array(size).fill().map((_, index) => index + 1);
-        let cells = rowHeaders.map(h => {
+        this.rows = rowHeaders.map(h => {
             return {header: h, position: Array(size).fill().map((_, index) => (h-1) + '' + index)}
         })
-
-        this.rows = cells;
     }
 
 }

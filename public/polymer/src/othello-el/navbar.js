@@ -37,7 +37,7 @@ class Navbar extends PolymerElement {
             <button class="navbar-toggler" type="button" on-click="showSidebar" data-toggle="collapse" data-target="#sidebar">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand d-none d-md-block pl-3" href="/polymer"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>thello</a>
+            <a class="navbar-brand d-none d-md-block pl-3" href="othello"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>thello</a>
             <ul class="nav navbar-nav flex-row ml-auto">
             <li class="nav-link mr-2 mr-md-0">
                 <a href="rules">About</a>
@@ -49,23 +49,9 @@ class Navbar extends PolymerElement {
         </nav>
     `;
     }
-    static get properties() {
-        return {
-            prop1: {
-                type: String,
-                value: 'othello-app'
-            }
-        };
-    }
 
-    showSidebar(){
-        let sidebar = document.getElementsByTagName('othello-app')[0]
-        .shadowRoot.querySelector('#sidenav')
-        .shadowRoot.getElementById('sidebar');
-        if(sidebar.classList.contains("show"))
-            sidebar.classList.remove("show");
-        else
-            sidebar.classList.add("show");
+    showSidebar(event) {
+        $(document.querySelector('sidenav-el').shadowRoot.getElementById('sidebar')).collapse('toggle');
     }
 }
 

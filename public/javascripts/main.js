@@ -150,16 +150,18 @@ function repaintBoard(board) {
             element.appendChild(child);
         }
     });
-    $("#black-tiles").text(board.squares.filter(e => e.value === 1).length);
-    $("#white-tiles").text(board.squares.filter(e => e.value === 2).length);
+    $("header-el")
+        .attr("count1", board.squares.filter(e => e.value === 1).length)
+        .attr("count2", board.squares.filter(e => e.value === 2).length);
 }
 
 /**
  * Displays a modal when the game finishes.
  */
 function showGameOverPopup() {
-    const black = parseInt($("#black-tiles").text());
-    const white = parseInt($("#white-tiles").text());
+    const headerElement = $('header-el');
+    const black = parseInt(headerElement.attr("count1"));
+    const white = parseInt(headerElement.attr("count2"));
     const $title = $('#game-over-title');
     if (black !== white) {
         const winnerValue = black > white ? 1 : 2;

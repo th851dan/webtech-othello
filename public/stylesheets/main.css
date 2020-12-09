@@ -63,8 +63,8 @@
 .sidenav {
     z-index: 1;
     overflow-y: auto;
-    margin-top: -7px;
-    padding-top: 50px;
+    margin-top: -57px;
+    padding-top: 100px;
     width: 200px;
     min-height: calc(100vh - 45px);
     top: 50px;
@@ -222,6 +222,7 @@
 
 .flip-tile {
     animation: flip 0.5s forwards;
+    animation-timing-function: cubic-bezier(0.04, 0.4, 0.8, 1.40);
 }
 
 .jelly-dot {

@@ -14,7 +14,6 @@
  */
 
 document.onreadystatechange = () => {
-    console.log("first websocket readystate: ", webSocket.readyState)
     const $window = $(window);
 
     function checkWidth() {
@@ -29,12 +28,16 @@ document.onreadystatechange = () => {
     if (document.readyState === "complete") {
         connectWebSocket();
         checkWidth();
-        request("getdifficulty");
         $(window).resize(checkWidth);
     }
 };
 
-let webSocket = new WebSocket("ws://localhost:9000/websocket");
+let webSocket;
+
+/**
+ * Connect or reconnect to server with websocket.
+ *
+ */
 
 /**
  * Connect or reconnect to server with websocket.
@@ -42,12 +45,13 @@ let webSocket = new WebSocket("ws://localhost:9000/websocket");
  */
 
 function connectWebSocket() {
-    if (webSocket.readyState === WebSocket.CLOSED){
-        webSocket = new WebSocket("ws://localhost:9000/websocket")
-    }
+    webSocket = new WebSocket("ws://localhost:9000/websocket")
     console.info("Connecting to WebSocket...");
 
-    webSocket.onopen = () => webSocketOnOpen();
+    webSocket.onopen = () => {
+        console.info("Connected to server: " + webSocket.url);
+        webSocket.send("connect");
+    }
 
     webSocket.onmessage = message => webSocketOnMessage(message)
 
@@ -55,57 +59,36 @@ function connectWebSocket() {
     webSocket.onclose = () => setTimeout(connectWebSocket, 2000);
 }
 
-/**
- * Do this after the websocket is opened.
- *
- */
-
-function webSocketOnOpen() {
-    console.info("Connected to server: " + webSocket.url);
-    webSocket.send("hello");
-}
-
-/**
- * Get the message from server through websocket and do what was told.
- * @param {String} message - The JSON string message
- */
-
-function webSocketOnMessage(message){
+function webSocketOnMessage(message) {
     try {
-        const json = JSON.parse(message.data);
-        switch (json.event) {
-            case "hello":
+        const { event, object } = JSON.parse(message.data);
+        switch (event) {
             case "board-changed":
-            case "board-highlight-changed":
-                repaintBoard(json)
-                break;
-            case "game-created":
-                //location.href = "othello";
-                repaintBoard(json)
-                break;
-            case "load-othello-page":
-                location.href = "othello";
+                repaintBoard(object)
                 break;
             case "difficulty-changed":
-            case "return-difficulty":
-                updateDifficulty(json.difficulty);
+                const { difficulty } = object;
+                updateDifficulty(difficulty);
                 break;
             case "game-status-changed":
-                OnStatusChanged(json.old, json.new);
+                const { new_status } = object;
+                if (new_status === "GAME_OVER") {
+                    setTimeout(showGameOverPopup, 500);
+                }
                 break;
-            case "unknow":
+            case "player-changed":
+                console.log(object)
                 break;
             default:
-                //repaintBoard(json)
+                console.error("Unknown message");
                 break;
         }
-        console.log("responsed to " + json.event)
     } catch (e) {
         console.error(e)
     }
 }
 
-$('#new-game-btn').click(() => request("loadnew"));
+$('#new-game-btn').click(() => fetch("new").then(() => location.href = "othello"));
 
 /**
  * Catch the change of the game status and react accordingly.
@@ -121,25 +104,14 @@ function OnStatusChanged(old, newStatus) {
  * Request a resource by sending the request with websocket.
  * @param {String} endpoint - Resource that is requested
  */
-
-const request = (endpoint) => {
-    console.log("websocket readystate: ", webSocket.readyState)
-    if (webSocket.readyState !== WebSocket.OPEN)
-        webSocket.onopen = () => {
-            webSocketOnOpen();
-            webSocket.send(endpoint);
-        }
-
-    else
-        webSocket.send(endpoint);
-};
+const request = (endpoint) => webSocket.send(endpoint);
 
 /**
  * Sets the desired difficulty level.
  * @param {String} difficulty - The desired difficulty
  */
 function changeDifficulty(difficulty) {
-    request("difficulty/" + difficulty)/*.then(updateDifficulty)*/;
+    request("difficulty/" + difficulty);
 }
 
 /**
@@ -193,17 +165,18 @@ function repaintBoard(board) {
             element.appendChild(child);
         }
     });
-    $("#black-tiles").text(board.squares.filter(e => e.value === 1).length);
-    $("#white-tiles").text(board.squares.filter(e => e.value === 2).length);
+    $("header-el")
+        .attr("count1", board.squares.filter(e => e.value === 1).length)
+        .attr("count2", board.squares.filter(e => e.value === 2).length);
 }
-
 
 /**
  * Displays a modal when the game finishes.
  */
 function showGameOverPopup() {
-    const black = parseInt($("#black-tiles").text());
-    const white = parseInt($("#white-tiles").text());
+    const headerElement = $('header-el');
+    const black = parseInt(headerElement.attr("count1"));
+    const white = parseInt(headerElement.attr("count2"));
     const $title = $('#game-over-title');
     if (black !== white) {
         const winnerValue = black > white ? 1 : 2;

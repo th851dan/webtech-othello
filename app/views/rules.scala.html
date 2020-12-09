@@ -1,7 +1,6 @@
 @()
 
 @main("Rules") {
-    @navbar()
     <div class="rules col-12 col-md-9 text-justify mt-3 mt-md-5 mb-3 mb-md-5 ml-auto mr-auto">
         <div class="content p-3 p-md-5">
             <h1 style="text-align: center">About Othello</h1>
@@ -27,7 +26,7 @@
             <p>Players will then continue to move alternately until they get to the end of the game and a winner is decided. This decision is reached by identifying which of the two opponents has the most pieces on the board.</p>
         </div>
     </div>
-    <a href=@{routes.HomeController.othello}>
+    <a href=@{routes.HomeController.othello()}>
         <div id="floating-btn" class="btn btn-lg float d-flex position-fixed justify-content-center align-items-center rounded-circle">
             <i class="fa fa-mail-reply"></i>
         </div>

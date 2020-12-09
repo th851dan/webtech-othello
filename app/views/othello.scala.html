@@ -1,20 +1,12 @@
 @(controller: de.htwg.se.othello.controller.controllerComponent.ControllerInterface)
 
 @size = @{ controller.size }
+@image1 = @{routes.Assets.versioned("images/1.png")}
+@image2 = @{routes.Assets.versioned("images/2.png")}
 @main("Othello") {
-    @navbar()
-    @sidenav()
+    <sidenav-el id="sidebar"></sidenav-el>
     <div class="d-table m-auto pt-3">
-        <div class="row m-2">
-            <div class="col text-center h-100">
-                <img src="@routes.Assets.versioned("images/1.png")" alt="●" draggable="false"/>
-                <span class="h4 align-middle" id="black-tiles"></span>
-            </div>
-            <div class="col text-center h-100">
-                <img src="@routes.Assets.versioned("images/2.png")" alt="○" draggable="false"/>
-                <span class="h4 align-middle" id="white-tiles"></span>
-            </div>
-        </div>
+        <header-el image1="@image1" image2="@image2"></header-el>
         <table class="game-table" style="background: url(@routes.Assets.versioned("images/back.jpg"))">
             @for(row <- 0 until size + 1) {
                 <th class="column-header text-center">
@@ -32,4 +24,5 @@
         </table>
         <div id="difficulty-div"></div>
     </div>
+    @modals()
 }

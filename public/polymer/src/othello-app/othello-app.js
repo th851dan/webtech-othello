@@ -33,7 +33,7 @@ class OthelloApp extends PolymerElement {
         webSocket.onmessage = message => this.webSocketOnMessage(message)
 
         webSocket.onerror = event => console.error(event);
-        webSocket.onclose = () => setTimeout(connectWebSocket, 2000);
+        webSocket.onclose = () => setTimeout(() => this.connectWebSocket(), 2000);
     }
 
     webSocketOnMessage(message) {
@@ -225,7 +225,7 @@ class OthelloApp extends PolymerElement {
                         <tr>
                             <th class="row-header text-center">[[row.header]]</th>
                             <template is="dom-repeat" items="[[row.position]]">
-                                <td class="cell text-center border border-dark" id="[[item.index]]" on-click="setEvent">[[item.value]]</td>
+                                <td class="cell text-center border border-dark" id="[[item.index]]" on-click="setEvent"/>
                             </template>
                         </tr>
                     </template>
@@ -278,12 +278,31 @@ class OthelloApp extends PolymerElement {
         }
     }
 
-    changeSource(newValue, oldValue) {
-        let pic = newValue.includes('1') ? '1' : '2';
-        this.shadowRoot.getElementById('img' + pic).setAttribute('src', newValue);
+    changeSource() {
+        let cellElements = this.shadowRoot.querySelector("table").getElementsByClassName("cell");
+        for (let item of cellElements) {
+            let elem = $(item);
+            elem.empty()
+            const cellValue = this.cells[item.id.charAt(1)][item.id.charAt(0)]
+            if (cellValue > 0) {
+                let child = document.createElement("img");
+                if (cellValue === 1) {
+                    child.setAttribute("src", this.image1);
+                }
+                if (cellValue === 2) {
+                    child.setAttribute("src", this.image2);
+                }
+                elem.append(child);
+            }
+            if (cellValue < 0) {
+                const child = document.createElement("span");
+                child.setAttribute("class", "dot d-inline-block rounded-circle mt-1 jelly-dot");
+                elem.append(child);
+            }
+        }
     }
 
-    updateColumnHeaders(size){
+    updateColumnHeaders(size) {
         this.columnHeaders = Array(size + 1).fill().map((_, index) => {
             if (index > 0)
                 return String.fromCharCode(index + 64);
@@ -293,6 +312,7 @@ class OthelloApp extends PolymerElement {
     sizeChanged(newValue) {
         this.updateColumnHeaders(newValue.length);
         this.updateCells(newValue.length);
+        this.changeSource()
     }
 
     setEvent(event) {
@@ -303,7 +323,6 @@ class OthelloApp extends PolymerElement {
         webSocket.send("set/" + x + y)
     }
 
-    // TODO: repaint cells with images
     updateCells(size) {
         let rowHeaders = Array(size).fill().map((_, index) => index + 1);
         this.rows = rowHeaders.map(h => {

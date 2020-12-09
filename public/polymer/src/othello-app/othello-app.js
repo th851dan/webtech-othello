@@ -33,7 +33,7 @@ class OthelloApp extends PolymerElement {
         webSocket.onmessage = message => this.webSocketOnMessage(message)
 
         webSocket.onerror = event => console.error(event);
-        webSocket.onclose = () => setTimeout(this.connectWebSocket, 2000);
+        webSocket.onclose = () => setTimeout(() => this.connectWebSocket(), 2000);
     }
 
     webSocketOnMessage(message) {

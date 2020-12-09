@@ -238,7 +238,8 @@ class OthelloApp extends PolymerElement {
         return {
             size: {
                 type: Number,
-                value: 8,
+                value: 15,
+                observer: "sizeChanged"
             },
 
             image1: {
@@ -273,7 +274,7 @@ class OthelloApp extends PolymerElement {
             },
             cells: {
                 type: Array,
-                observer: "sizeChanged"
+                observer: "cellsChanged"
             }
         }
     }
@@ -310,9 +311,13 @@ class OthelloApp extends PolymerElement {
     }
 
     sizeChanged(newValue) {
-        this.updateColumnHeaders(newValue.length);
-        this.updateCells(newValue.length);
-        this.changeSource()
+        this.updateColumnHeaders(newValue);
+        this.updateCells(newValue);
+        //this.changeSource()
+    }
+
+    cellsChanged(newValue){
+        this.changeSource();
     }
 
     setEvent(event) {
@@ -323,6 +328,8 @@ class OthelloApp extends PolymerElement {
         webSocket.send("set/" + x + y)
     }
 
+
+    //update only the id of cells, not the value. Cells have their own property this.cells
     updateCells(size) {
         let rowHeaders = Array(size).fill().map((_, index) => index + 1);
         this.rows = rowHeaders.map(h => {
@@ -331,7 +338,7 @@ class OthelloApp extends PolymerElement {
                 position: Array(size).fill().map((_, index) => {
                     return {
                         index: (h - 1) + '' + index,
-                        value: this.cells[index][h-1]
+                        // value: this.cells[index][h-1]
                     }
                 })
             }

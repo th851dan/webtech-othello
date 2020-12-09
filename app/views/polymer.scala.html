@@ -21,9 +21,10 @@
     </head>
     <body>
         <othello-app
-        image1="@routes.Assets.versioned("images/1.png")"
-        image2="@routes.Assets.versioned("images/2.png")"
-        background="@routes.Assets.versioned("images/back.jpg")">
+            size="@controller.size"
+            image1="@routes.Assets.versioned("images/1.png")"
+            image2="@routes.Assets.versioned("images/2.png")"
+            background="@routes.Assets.versioned("images/back.jpg")">
         </othello-app>
         @modals()
     </body>

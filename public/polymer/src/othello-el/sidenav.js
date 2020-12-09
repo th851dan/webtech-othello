@@ -1,4 +1,5 @@
 import { html, PolymerElement } from '../../node_modules/@polymer/polymer/polymer-element.js';
+import * as app  from "../othello-app/othello-app.js";
 /**
  * @customElement
  * @polymer
@@ -9,6 +10,11 @@ class Sidenav extends PolymerElement {
         document.addEventListener("readystatechange", () => {
             this._showSidebar(this.shadowRoot);
         });
+    }
+
+    request(event) {
+        const endpoint = event.target.textContent.toLowerCase()
+        app.request(endpoint)
     }
 
     static get template() {
@@ -77,13 +83,13 @@ class Sidenav extends PolymerElement {
               <button type="button" role="button" class="text-left btn btn-light w-100" data-toggle="modal" on-click="showNewGameModal" data-target="#new-game-modal">New Game</button>
           </li>
           <li class="nav-item">
-              <button type="button" role="button" class="text-left btn btn-light w-100" onclick=request("undo")>Undo</button>
+              <button type="button" role="button" class="text-left btn btn-light w-100" onclick=request("undo") on-click=request>Undo</button>
           </li>
           <li class="nav-item">
-              <button type="button" role="button" class="text-left btn btn-light w-100" onclick=request("redo")>Redo</button>
+              <button type="button" role="button" class="text-left btn btn-light w-100" onclick=request("redo") on-click=request>Redo</button>
           </li>
           <li class="nav-item">
-              <button type="button" role="button" class="text-left btn btn-light w-100" onclick=request("hint")>Hint</button>
+              <button type="button" role="button" class="text-left btn btn-light w-100" onclick=request("hint") on-click="request">Hint</button>
           </li>
           <li class="nav-item">
               <button type="button" role="button" class="text-left btn btn-light dropdown-toggle w-100" on-click="show" data-toggle="collapse" data-target="difficulty">
@@ -135,7 +141,7 @@ class Sidenav extends PolymerElement {
                         sidebarEl.classList.add('show');
                 }
             }
-            
+
             if (document.readyState === "complete") {
                 checkWidth(thisShadowRoot);
                 window.onresize = () => checkWidth(thisShadowRoot)
@@ -144,12 +150,27 @@ class Sidenav extends PolymerElement {
     }
 
     show(e) {
-        let showEl = $(this.shadowRoot.getElementById(e.currentTarget.dataset.target));
-        showEl.collapse('toggle');
+        try {
+            const showEl = $(this.shadowRoot.getElementById(e.currentTarget.dataset.target));
+            showEl.collapse('toggle');
+        } catch (error) {
+            // TODO: proper collapse in polymer app
+            const showEl = this.shadowRoot.getElementById(e.currentTarget.dataset.target);
+            if (showEl.classList.contains("show"))
+                showEl.classList.remove("show");
+            else
+                showEl.classList.add("show");
+        }
     }
 
     showNewGameModal() {
-        $('#new-game-modal').modal('show');
+        try {
+            $('#new-game-modal').modal('show');
+        }
+        catch (error) {
+            // TODO: modal in polymer app
+            app.request("new")
+        }
     }
 
 }

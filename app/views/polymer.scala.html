@@ -1,6 +1,5 @@
 @(controller: de.htwg.se.othello.controller.controllerComponent.ControllerInterface)
 
-@size = @{ controller.size }
 <!doctype html>
 <html lang="en">
     <head>
@@ -22,10 +21,10 @@
         <script src="@routes.Assets.versioned("javascripts/main.js")" type="application/javascript"></script>
     </head>
     <body>
-        <othello-app size="@size"
+        <othello-app
         image1="@routes.Assets.versioned("images/1.png")"
         image2="@routes.Assets.versioned("images/2.png")"
-        picbackground="@routes.Assets.versioned("images/back.jpg")">
+        background="@routes.Assets.versioned("images/back.jpg")">
         </othello-app>
         @modals()
     </body>

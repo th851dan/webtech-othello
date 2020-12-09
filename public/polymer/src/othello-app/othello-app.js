@@ -46,7 +46,7 @@ class OthelloApp extends PolymerElement {
                         cellArray[i] = []
                     }
                     for (let o of object.squares) {
-                        cellArray[o.row][o.col] = o.value
+                        cellArray[o.col][o.row] = o.value
                     }
                     this.cells = cellArray;
                     this.count1 = [].concat.apply([], cellArray).filter(e => e === 1).length;
@@ -281,25 +281,29 @@ class OthelloApp extends PolymerElement {
 
     cellsChanged() {
         let cellElements = this.shadowRoot.querySelector("table").getElementsByClassName("cell");
-        for (let item of cellElements) {
-            let elem = $(item);
-            elem.empty()
-            const cellValue = this.cells[item.id.charAt(1)][item.id.charAt(0)]
+        for (const item of cellElements) {
+            const elem = $(item);
+            const oldChild = elem.children().first();
+            const cellValue = this.cells[item.id.charAt(0)][item.id.charAt(1)];
+            if (cellValue === 0 && oldChild)
+                oldChild.remove();
+            const tag = cellValue > 0 ? "img" : "span";
+            const child = document.createElement(tag);
+            child.setAttribute('style', "pointer-events: none")
             if (cellValue > 0) {
-                let child = document.createElement("img");
-                child.setAttribute('style', "pointer-events: none")
-                if (cellValue === 1) {
-                    child.setAttribute("src", this.image1);
-                }
-                if (cellValue === 2) {
-                    child.setAttribute("src", this.image2);
-                }
-                elem.append(child);
+                const imageAttribute = cellValue === 1 ? this.image1 : this.image2
+                child.setAttribute("src", imageAttribute);
+                child.setAttribute("class", "flip-tile");
+                child.setAttribute("alt", cellValue === 1 ? "●" : "○");
+                child.setAttribute("draggable", "false");
+                if (!oldChild)
+                    elem.append(child);
+                if (oldChild && oldChild.attr('src') !== $(child).attr('src'))
+                    elem.empty().append(child)
+
             }
             if (cellValue < 0) {
-                const child = document.createElement("span");
                 child.setAttribute("class", "dot d-inline-block rounded-circle mt-1 jelly-dot");
-                child.setAttribute('style', "pointer-events: none")
                 elem.append(child);
             }
         }

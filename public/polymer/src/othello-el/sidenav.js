@@ -98,13 +98,13 @@ class Sidenav extends PolymerElement {
               <div class="collapse collapsible-panel" id="difficulty">
                   <ul class="navbar-nav">
                       <li class="nav-item">
-                          <button id="Easy" type="button" role="button" class="text-left btn w-100" onclick=changeDifficulty("e")>Easy</button>
+                          <button id="Easy" type="button" role="button" class="text-left btn w-100" onclick=changeDifficulty("e") on-click="changeDifficulty">Easy</button>
                       </li>
                       <li class="nav-item">
-                          <button id="Normal" type="button" role="button" class="text-left btn w-100" data-toggle="collapse" onclick=changeDifficulty("m")>Normal</button>
+                          <button id="Normal" type="button" role="button" class="text-left btn w-100" data-toggle="collapse" onclick=changeDifficulty("m") on-click="changeDifficulty">Normal</button>
                       </li>
                       <li class="nav-item">
-                          <button id="Hard" type="button" role="button" class="text-left btn w-100" data-toggle="collapse" onclick=changeDifficulty("d")>Hard</button>
+                          <button id="Hard" type="button" role="button" class="text-left btn w-100" data-toggle="collapse" onclick=changeDifficulty("d") on-click="changeDifficulty">Hard</button>
                       </li>
                   </ul>
               </div>
@@ -160,6 +160,16 @@ class Sidenav extends PolymerElement {
                 showEl.classList.remove("show");
             else
                 showEl.classList.add("show");
+        }
+    }
+
+    changeDifficulty(event) {
+        if (event.target.id === "Easy") {
+            app.request("difficulty/e")
+        } else if (event.target.id === "Normal") {
+            app.request("difficulty/m")
+        } else if (event.target.id === "Hard") {
+            app.request("difficulty/d")
         }
     }
 

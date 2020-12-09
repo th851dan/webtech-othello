@@ -225,7 +225,7 @@ class OthelloApp extends PolymerElement {
                         <tr>
                             <th class="row-header text-center">[[row.header]]</th>
                             <template is="dom-repeat" items="[[row.position]]">
-                                <td class="cell text-center border border-dark" id="[[item.index]]" on-click="setEvent"/>
+                                <td class="cell text-center border border-dark" id="[[item]]" on-click="setEvent"/>
                             </template>
                         </tr>
                     </template>
@@ -279,7 +279,7 @@ class OthelloApp extends PolymerElement {
         }
     }
 
-    changeSource() {
+    cellsChanged() {
         let cellElements = this.shadowRoot.querySelector("table").getElementsByClassName("cell");
         for (let item of cellElements) {
             let elem = $(item);
@@ -287,6 +287,7 @@ class OthelloApp extends PolymerElement {
             const cellValue = this.cells[item.id.charAt(1)][item.id.charAt(0)]
             if (cellValue > 0) {
                 let child = document.createElement("img");
+                child.setAttribute('style', "pointer-events: none")
                 if (cellValue === 1) {
                     child.setAttribute("src", this.image1);
                 }
@@ -298,6 +299,7 @@ class OthelloApp extends PolymerElement {
             if (cellValue < 0) {
                 const child = document.createElement("span");
                 child.setAttribute("class", "dot d-inline-block rounded-circle mt-1 jelly-dot");
+                child.setAttribute('style', "pointer-events: none")
                 elem.append(child);
             }
         }
@@ -313,11 +315,6 @@ class OthelloApp extends PolymerElement {
     sizeChanged(newValue) {
         this.updateColumnHeaders(newValue);
         this.updateCells(newValue);
-        //this.changeSource()
-    }
-
-    cellsChanged(newValue){
-        this.changeSource();
     }
 
     setEvent(event) {
@@ -335,12 +332,7 @@ class OthelloApp extends PolymerElement {
         this.rows = rowHeaders.map(h => {
             return {
                 header: h,
-                position: Array(size).fill().map((_, index) => {
-                    return {
-                        index: (h - 1) + '' + index,
-                        // value: this.cells[index][h-1]
-                    }
-                })
+                position: Array(size).fill().map((_, index) => (h - 1) + '' + index)
             }
         })
     }

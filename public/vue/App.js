@@ -17,21 +17,3 @@ new Vue({
     el: '#app',
     router: router,
 })
-
-document.addEventListener('readystatechange', () => {
-    const $window = $(window);
-
-    function checkWidth() {
-        if ($window.width() < 768) {
-            $('#sidebar').removeClass('show');
-        }
-        if ($window.width() >= 768) {
-            $('#sidebar').addClass('show');
-        }
-    }
-    // prevent from loading multiple times
-    if (document.readyState === "complete") {
-        checkWidth();
-        $(window).resize(checkWidth);
-    }
-});

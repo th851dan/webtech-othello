@@ -1,7 +1,7 @@
 const Game = {
     template: `
 <div>
-    <nav class="sidenav side-collapse bg-light position-fixed" id="sidebar">
+    <nav class="sidenav collapse side-collapse bg-light position-fixed" id="sidebar">
         <ul class="navbar-nav">
             <li class="nav-item">
                 <button type="button" role="button" class="text-left btn btn-light w-100" data-toggle="modal" data-target="#new-game-modal">New Game</button>
@@ -77,9 +77,22 @@ const Game = {
     },
     // TODO: WebSocket
     created: () => { console.log("created") },
+    mounted() {
+        const $window = $(window);
+        function checkWidth() {
+            if ($window.width() < 768) {
+                $('#sidebar').removeClass('show');
+            }
+            if ($window.width() >= 768) {
+                $('#sidebar').addClass('show');
+            }
+        }
+        checkWidth();
+        $window.resize(checkWidth);
+    },
     methods: {
         clicked(evt) {
-            console.log(this.size)
+            console.log(evt, this.size)
         },
         columnHeader: (header) => {
             if (header > 0) {

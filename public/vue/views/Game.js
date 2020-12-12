@@ -81,8 +81,9 @@ const Game = {
             let toggle = window.innerWidth < 768 ? 'hide' : 'show';
             $('#sidebar').collapse(toggle);
         }
-        checkWidth();
+        window.onload = checkWidth;
         window.onresize = checkWidth;
+        setTimeout(checkWidth);
     },
     methods: {
         clicked(evt) {

@@ -12,8 +12,6 @@ import play.api.libs.streams.ActorFlow
 import play.api.mvc._
 
 import javax.inject._
-import scala.concurrent.Await
-import scala.concurrent.duration.Duration
 import scala.language.postfixOps
 import scala.swing.Reactor
 
@@ -31,71 +29,12 @@ class HomeController @Inject()(implicit system: ActorSystem) extends InjectedCon
     Ok(views.html.index())
   }
 
-  // TODO: remove old views (or better solution?)
-  def othello: Action[AnyContent] = Action {
-    Ok(views.html.othello(gameController))
+  def matchAll(path: String): Action[AnyContent] = Action {
+    Ok(views.html.index())
   }
 
   def polymer: Action[AnyContent] = Action {
     Ok(views.html.polymer(gameController))
-  }
-
-  def currentPlayer: Action[AnyContent] = Action {
-    Ok(gameController.currentPlayer.toString)
-  }
-
-  def newGame: Action[AnyContent] = Action {
-    Await.result(gameController.newGame, Duration.Inf)
-    Ok(views.html.othello(gameController))
-  }
-
-  def resizeBoard(op: String): Action[AnyContent] = Action {
-    gameController.resizeBoard(op)
-    Ok(views.html.othello(gameController))
-  }
-  def set(pos: String): Action[AnyContent] = Action {
-    processInputLine(pos)
-    Ok(views.html.othello(gameController))
-  }
-
-  def rules: Action[AnyContent] = Action {
-    Ok(views.html.rules())
-  }
-
-  def hint: Action[AnyContent] = Action {
-    gameController.highlight()
-    Ok(views.html.othello(gameController))
-  }
-
-  def undo: Action[AnyContent] = Action {
-    gameController.undo()
-    Ok(views.html.othello(gameController))
-  }
-
-  def redo: Action[AnyContent] = Action {
-    gameController.redo()
-    Ok(views.html.othello(gameController))
-  }
-
-  def boardJson: Action[AnyContent] = Action {
-    Ok(gameController.boardJson)
-  }
-
-  def difficulty(dif: String): Action[AnyContent] = Action {
-    gameController.setDifficulty(dif)
-    Ok(views.html.othello(gameController))
-  }
-
-  def count(colorValue: String): Action[AnyContent] = Action {
-    Ok(gameController.count(colorValue.toInt).toString)
-  }
-
-  def getDifficulty: Action[AnyContent] = Action {
-    Ok(gameController.difficulty)
-  }
-
-  def getGameOver: Action[AnyContent] = Action {
-    Ok(gameController.gameOver.toString)
   }
 
   def processInputLine: String => Unit = {

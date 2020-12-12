@@ -4,22 +4,9 @@
 # ~~~~
 
 GET     /                           controllers.HomeController.index
-GET     /othello                    controllers.HomeController.othello
-GET     /currentplayer              controllers.HomeController.currentPlayer
-GET     /resize/:op                 controllers.HomeController.resizeBoard(op)
-GET     /new                        controllers.HomeController.newGame
-POST    /set/:pos                   controllers.HomeController.set(pos)
-GET     /rules                      controllers.HomeController.rules
-GET     /hint                       controllers.HomeController.hint
-GET     /undo                       controllers.HomeController.undo
-GET     /redo                       controllers.HomeController.redo
-GET     /difficulty/:dif            controllers.HomeController.difficulty(dif)
-GET     /boardJson                  controllers.HomeController.boardJson
-GET     /count/:colorValue          controllers.HomeController.count(colorValue)
-GET     /getDifficulty              controllers.HomeController.getDifficulty
-GET     /getGameOver                controllers.HomeController.getGameOver
 GET     /websocket                  controllers.HomeController.socket
 GET     /polymer                    controllers.HomeController.polymer
+GET     /:page                      controllers.HomeController.matchAll(page)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

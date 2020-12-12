@@ -2,6 +2,7 @@ import Home from './views/Home.js'
 import Game from './views/Game.js'
 import Rules from './views/Rules.js'
 import NotFound from './views/NotFound.js'
+import Navbar from './components/Navbar.js'
 
 const routes = [
     { path: '/', component: Home },

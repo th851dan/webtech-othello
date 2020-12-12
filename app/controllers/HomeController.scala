@@ -31,6 +31,7 @@ class HomeController @Inject()(implicit system: ActorSystem) extends InjectedCon
     Ok(views.html.index())
   }
 
+  // TODO: remove old views (or better solution?)
   def othello: Action[AnyContent] = Action {
     Ok(views.html.othello(gameController))
   }

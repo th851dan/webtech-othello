@@ -17,3 +17,5 @@ new Vue({
     el: '#app',
     router: router,
 })
+
+export default router

@@ -76,19 +76,13 @@ const Game = {
         }
     },
     // TODO: WebSocket
-    created: () => { console.log("created") },
     mounted() {
-        const $window = $(window);
         function checkWidth() {
-            if ($window.width() < 768) {
-                $('#sidebar').removeClass('show');
-            }
-            if ($window.width() >= 768) {
-                $('#sidebar').addClass('show');
-            }
+            let toggle = window.innerWidth < 768 ? 'hide' : 'show';
+            $('#sidebar').collapse(toggle);
         }
         checkWidth();
-        $window.resize(checkWidth);
+        window.onresize = checkWidth;
     },
     methods: {
         clicked(evt) {

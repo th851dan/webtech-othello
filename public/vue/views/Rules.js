@@ -3,11 +3,11 @@ import router from '../App.js'
 const Rules = {
     template: `
 <div>
-    <div class="rules col-12 col-md-9 text-justify mt-3 mt-md-5 mb-3 mb-md-5 ml-auto mr-auto">
+    <div class="rules col-12 col-md-9 text-justify mt-3 mt-md-5 mb-3 mb-md-5 ml-auto mr-auto animate__animated animate__fadeInRight rounded">
         <div class="content p-3 p-md-5">
-            <h1 style="text-align: center">About Othello</h1>
+            <h1 class="text-center">About Othello</h1>
 
-            <img class="d-block m-auto" :src="screenshot" alt="screenshot"/>
+            <img class="d-block m-auto animate__animated animate__fadeInLeftBig" :src="screenshot" alt="screenshot"/>
 
             <p>Othello is the trading name of a much older board game, Reversi. In both its originally named form and the newer trademark this game has become very popular on computers as much as in board format. Often referred to as a game of abstract strategy, Othello can only be played as a 2 player game. Made up of 8 rows and 8 columns, the board is populated with pieces from both players in turn. Each player’s pieces will be of one colour with the most common occurrence being black and white.</p>
 
@@ -28,7 +28,7 @@ const Rules = {
             <p>Players will then continue to move alternately until they get to the end of the game and a winner is decided. This decision is reached by identifying which of the two opponents has the most pieces on the board.</p>
         </div>
     </div>
-    <div id="floating-btn" class="btn btn-lg float d-flex position-fixed justify-content-center align-items-center rounded-circle">
+    <div id="floating-btn" class="btn btn-lg float d-flex position-fixed justify-content-center align-items-center rounded-circle animate__animated animate__slideInUp">
         <i class="fa fa-mail-reply"></i>
     </div>
 </div>

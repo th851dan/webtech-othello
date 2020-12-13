@@ -3,6 +3,7 @@ import Game from './views/Game.js'
 import Rules from './views/Rules.js'
 import NotFound from './views/NotFound.js'
 import Navbar from './components/Navbar.js'
+import Sidebar from "./components/Sidebar.js";
 
 const routes = [
     { path: '/', component: Home },

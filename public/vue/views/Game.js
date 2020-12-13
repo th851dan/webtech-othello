@@ -1,5 +1,3 @@
-import Sidebar from "../components/Sidebar.js";
-
 const Game = {
     template: `
 <div>
@@ -35,9 +33,8 @@ const Game = {
             let toggle = window.innerWidth < 768 ? 'hide' : 'show';
             $('#sidebar').collapse(toggle);
         }
-        window.onload = checkWidth;
+        checkWidth();
         window.onresize = checkWidth;
-        setTimeout(checkWidth);
     },
     methods: {
         clicked(evt) {

@@ -33,10 +33,6 @@ class HomeController @Inject()(implicit system: ActorSystem) extends InjectedCon
     Ok(views.html.index())
   }
 
-  def polymer: Action[AnyContent] = Action {
-    Ok(views.html.polymer(gameController))
-  }
-
   def processInputLine: String => Unit = {
     input => input.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)").toList match {
       case col :: row :: Nil =>

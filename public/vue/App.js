@@ -19,7 +19,20 @@ const router = new VueRouter({
 });
 new Vue({
     el: '#app',
+    components: {Sidebar, Navbar},
     router: router,
+    template: `
+    <div class="user-select-none">
+        <navbar-vue class="animate__animated animate__slideInDown animate__faster"/>
+        <sidebar-vue/>
+        <router-view/>
+    </div>
+    `
+    ,
+    mounted: () => {
+        document.title = "Welcome to Othello"
+        $('#sidebar').collapse('hide')
+    },
 })
 
 export default router

@@ -15,9 +15,6 @@
         <script src="@{"https://unpkg.com/vue-router"}" type="application/javascript"></script>
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
         <script src="@{routes.Assets.versioned("vue/App.js")}" type="module"></script>
-        <script src="@{routes.Assets.versioned("polymer/src/othello-el/header.js")}" type="module"></script>
     </head>
-    <body class="user-select-none">
-        @content
-    </body>
+    <body>@content</body>
 </html>

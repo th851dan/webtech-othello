@@ -5,7 +5,6 @@
 
 GET     /                           controllers.HomeController.index
 GET     /websocket                  controllers.HomeController.socket
-GET     /polymer                    controllers.HomeController.polymer
 GET     /:page                      controllers.HomeController.matchAll(page)
 
 # Map static resources from the /public folder to the /assets URL path

@@ -28,7 +28,7 @@ const Rules = {
             <p>Players will then continue to move alternately until they get to the end of the game and a winner is decided. This decision is reached by identifying which of the two opponents has the most pieces on the board.</p>
         </div>
     </div>
-    <div id="floating-btn" class="btn btn-lg float d-flex position-fixed justify-content-center align-items-center rounded-circle animate__animated animate__slideInUp">
+    <div id="floating-btn" class="btn btn-lg d-flex position-fixed justify-content-center align-items-center rounded-circle animate__animated animate__slideInUp animate__fast">
         <i class="fa fa-mail-reply"></i>
     </div>
 </div>
@@ -40,6 +40,8 @@ const Rules = {
     },
     mounted() {
         $('#floating-btn').click(() => router.go(-1));
+        $('#sidebar').collapse('hide');
+        document.title = "About"
     }
 };
 

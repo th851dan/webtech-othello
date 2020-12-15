@@ -5,13 +5,19 @@ const store = {
         cells: [],
         count1: 0,
         count2: 0,
+        currentPlayer: {
+            name: '',
+            value: 0,
+            isBot: false
+        },
         status: '',
+        mode: 0,
         image1: 'assets/images/1.png',
         image2: 'assets/images/2.png',
         style: "background-image: url('assets/images/back.jpg')"
     },
-    setBoardInfo(size, cells) {
-        this.state.size = size;
+    setBoardInfo(cells) {
+        this.state.size = cells.length;
         this.state.cells = cells;
         this.state.count1 = [].concat.apply([], cells).filter(e => e === 1).length;
         this.state.count2 = [].concat.apply([], cells).filter(e => e === 2).length;
@@ -21,6 +27,12 @@ const store = {
     },
     setStatus(status) {
         this.state.status = status;
+    },
+    setPlayer(player) {
+        this.state.currentPlayer = player;
+    },
+    setMode(mode) {
+        this.state.mode = mode;
     },
 }
 
@@ -41,18 +53,23 @@ function connectWebSocket() {
     webSocket.onclose = () => setTimeout(connectWebSocket, 2000);
 }
 
+function parseBoard(object) {
+    const {size, squares} = object;
+    let cellArray = new Array(size);
+    for (let i = 0; i < size; i++) {
+        cellArray[i] = new Array(size);
+    }
+    squares.forEach(o => cellArray[o.col][o.row] = o.value);
+    return cellArray;
+}
+
 function webSocketOnMessage(message) {
     try {
         const { event, object } = JSON.parse(message.data);
         switch (event) {
             case 'board-changed':
-                const {size, squares} = object;
-                let cellArray = new Array(size);
-                for (let i = 0; i < size; i++) {
-                    cellArray[i] = new Array(size);
-                }
-                squares.forEach(o => cellArray[o.col][o.row] = o.value);
-                store.setBoardInfo(size, cellArray);
+                let board = parseBoard(object);
+                store.setBoardInfo(board);
                 break;
             case 'difficulty-changed':
                 const {difficulty} = object;
@@ -66,7 +83,11 @@ function webSocketOnMessage(message) {
                 }
                 break;
             case "player-changed":
-                // console.log(object);
+                store.setPlayer(object)
+                break;
+            case "mode-changed":
+                const {mode} = object;
+                store.setMode(mode)
                 break;
             default:
                 console.error("Unknown message");

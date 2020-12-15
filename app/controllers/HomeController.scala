@@ -3,7 +3,7 @@ package controllers
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import com.google.inject.{Guice, Injector}
 import de.htwg.se.othello.controller.controllerComponent.ControllerInterface
-import de.htwg.se.othello.controller.controllerComponent.controllerMockImpl.{BoardChanged, CurrentPlayerChanged, DifficultyChanged, GameStatusChanged}
+import de.htwg.se.othello.controller.controllerComponent.controllerMockImpl.{BoardChanged, CurrentPlayerChanged, DifficultyChanged, GameStatusChanged, ModeChanged}
 import de.htwg.se.othello.{BoardModuleServer, OthelloModule, UserModuleServer}
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 import play.api.Logger
@@ -60,6 +60,8 @@ class HomeController @Inject()(implicit system: ActorSystem) extends InjectedCon
         out ! buildJsObject("game-status-changed", event.status)
       case event: CurrentPlayerChanged =>
         out ! buildJsObject("player-changed", event.player)
+      case event: ModeChanged =>
+        out ! buildJsObject("mode-changed", event.mode)
       case other => log.warn("Unmanaged event: " + other.getClass.getName)
     }
 
@@ -71,15 +73,18 @@ class HomeController @Inject()(implicit system: ActorSystem) extends InjectedCon
       case "connect"  =>
         out ! buildJsObject("board-changed", gameController.boardJson)
         out ! buildJsObject("difficulty-changed", Json.obj("difficulty" -> gameController.difficulty))
+        out ! buildJsObject("player-changed", gameController.currentPlayer.toJson)
       case "new"      => gameController.newGame
       case "undo"     => gameController.undo()
       case "redo"     => gameController.redo()
       case "hint"     => gameController.highlight()
-      case changeDif: String if changeDif.contains("difficulty/") =>
-        gameController.setDifficulty(changeDif.split('/').last)
-      case setCell: String if setCell.contains("set/") =>
-        val input = setCell.split('/').last
-        processInputLine(input)
+      case input: String if input.contains("/") =>
+        val request = input.split("/")
+        request(0) match {
+        case "difficulty" => gameController.setDifficulty(request.last)
+        case "setupplayers" => gameController.setupPlayers(request.last)
+        case "set" => processInputLine(request.last)
+      }
       case message => log.warn("Unknown message: " + message)
     }
   }

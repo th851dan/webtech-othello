@@ -25,14 +25,21 @@ const Game = {
                 </th>
             </tr>
         </table>
-        <div>{{difficulty}}</div>
+        <div v-if="size > 0" class="collapse pt-2 pb-2 pl-3 pr-3" id="info-panel">
+            <div><span>Difficulty:</span><span class="float-right font-weight-bold">{{displayedDifficulty}}</span></div>
+            <div><span>Current turn:</span><span class="float-right font-weight-bold">{{displayedPlayerName}}</span></div>
+            <div><span>Mode:</span><span class="float-right font-weight-bold">{{displayedGameMode}}</span></div>
+        </div>
+        <button class="info-btn btn dropdown-toggle" data-toggle="collapse" data-target="#info-panel"/>
     </div>
 </div>
 `,
     data() { return store.state },
     mounted() {
         function checkWidth() {
-            $('#sidebar').collapse(window.innerWidth < 768 ? 'hide' : 'show');
+            if (location.pathname === '/othello') {
+                $('#sidebar').collapse(window.innerWidth < 768 ? 'hide' : 'show');
+            }
         }
         checkWidth();
         document.title = "Othello"
@@ -46,6 +53,22 @@ const Game = {
         },
         columnHeader: header => header > 0 ? String.fromCharCode(header + 64) : ''
     },
+    computed: {
+        displayedPlayerName() {
+            return this.currentPlayer.name + (this.currentPlayer.isBot ? ' (bot)' : '');
+        },
+        displayedGameMode() {
+            const firstPlayer = this.mode === '0' ? 'Bot' : "Player";
+            const secondPlayer = this.mode < '2' ? 'Bot' : "Player";
+            return firstPlayer + " vs " + secondPlayer;
+        },
+        displayedDifficulty() {
+            return this.mode === '2' ? "-" : this.difficulty;
+        }
+    },
+    beforeDestroy() {
+        $('#sidebar').collapse('hide');
+    }
 }
 
 export default Game;

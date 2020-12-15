@@ -11,7 +11,10 @@ const Home = {
         </router-link>
     </div>
 `,
-    methods: { click: () => webSocket.send('new') }
+    methods: { click: () => webSocket.send('new') },
+    mounted() {
+        document.title = "Welcome to Othello"
+    }
 };
 
 export default Home;

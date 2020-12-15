@@ -18,7 +18,13 @@ const Sidebar = Vue.component('sidebar-vue', {
                 <div class="collapse collapsible-panel" id="difficulty">
                     <ul class="navbar-nav">
                         <li v-for="element in [{key: 'e', text: 'Easy'}, {key: 'm', text:'Normal'}, {key: 'd' ,text:'Hard'}]" class="nav-item">
-                            <button :id='"difficulty/" + element.key' :class="{ 'text-body': difficulty === element.text }" type="button" role="button" class="text-left btn w-100" v-on:click="send">{{element.text}}</button>
+                            <button
+                                :id='"difficulty/" + element.key'
+                                :class="{ 'text-body': displayedDifficulty === element.text, disabled: mode === '2' }"
+                                type="button" role="button"
+                                class="text-left btn w-100"
+                                v-on:click="send"
+                            >{{element.text}}</button>
                         </li>
                     </ul>
                 </div>
@@ -29,8 +35,8 @@ const Sidebar = Vue.component('sidebar-vue', {
                 </button>
                 <div class="collapse collapsible-panel" id="player-mode">
                     <ul class="navbar-nav">
-                        <li v-for="element in ['Player vs Player', 'Player vs Bot']" class="nav-item">
-                            <button type="button" role="button" class="text-left btn w-100">{{element}}</button>
+                        <li v-for="element in [{key: '2', text: 'Player vs Player'}, {key: '1', text:'Player vs Bot'}, {key: '0', text:'Bot vs Bot'}]" class="nav-item">
+                            <button :id='"setupplayers/" + element.key' :class="{ 'text-body': mode === element.key }" type="button" role="button" class="text-left btn w-100" v-on:click="send">{{element.text}}</button>
                         </li>
                     </ul>
                 </div>
@@ -73,7 +79,12 @@ const Sidebar = Vue.component('sidebar-vue', {
 </div>
     `,
     data() { return store.state },
-    methods: { send: (evt) => webSocket.send(evt.target.id) }
+    methods: { send: (evt) => webSocket.send(evt.target.id) },
+    computed: {
+        displayedDifficulty() {
+            return this.mode === '2' ? "-" : this.difficulty;
+        }
+    }
 })
 
 export default Sidebar;

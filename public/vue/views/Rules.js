@@ -1,5 +1,3 @@
-import router from '../App.js'
-
 const Rules = {
     template: `
 <div>
@@ -39,8 +37,7 @@ const Rules = {
         }
     },
     mounted() {
-        $('#floating-btn').click(() => router.go(-1));
-        $('#sidebar').collapse('hide');
+        $('#floating-btn').click(() => history.back());
         document.title = "About"
     }
 };

@@ -28,16 +28,27 @@
 .game-table .column-header {
     height: 28px;
     background: #aaaaaa;
+    cursor: default;
 }
 
 .game-table .row-header {
     background: #aaaaaa;
     width: 28px;
+    cursor: default;
 }
 
 .game-table .cell {
     width: 48px;
     height: 48px;
+}
+
+.game-table .cell img {
+    position: relative
+}
+
+/* Overrides bootstrap class */
+.game-table .cell.border-dark {
+    border-color: rgba(20,20,20,0.8) !important;
 }
 
 .game-table .cell:hover {
@@ -84,10 +95,33 @@
     color: #818181;
 }
 
+.sidenav.collapse {
+    visibility: hidden;
+}
+
+.sidenav.collapse.show {
+    transition-property: margin-left, visibility;
+    transition-duration: 0.2s;
+    visibility: visible;
+}
+
+.sidenav.collapsing {
+    transition-property: margin-left, visibility;
+    transition-duration: 0.2s;
+    height: 110vh;
+    margin-left: -200px;
+    transition-timing-function: ease-in-out;
+}
+
+.collapsible-panel {
+    background: #eeeeee;
+    box-shadow: inset 0 2px 2px 0 rgba(30, 30, 30, 0.1);
+}
+
 .navbar {
     z-index: 2;
     background: rgb(69,69,69);
-    background: linear-gradient(180deg, rgba(70,70,70,0.95) 0%, rgba(40,40,40,0.95) 100%);
+    background: linear-gradient(180deg, rgba(70,70,70,0.95) 0%, rgba(50,50,50,0.95) 100%);
     box-shadow: 2px 3px 6px -1px rgba(0, 0, 0, 0.29);
 }
 
@@ -97,44 +131,26 @@
     width: 200px;
 }
 
-.navbar > .navbar-nav > .nav-link a {
+.navbar > .navbar-nav a {
     color: #cccccc;
     text-decoration: none;
     font-size: 18px;
     margin-right: 5px;
 }
 
-.navbar > .navbar-nav > .nav-link a:hover {
+.navbar .navbar-nav a:hover {
     color: #eafffa;
+    transition: all 0.2s ease-in
+}
+
+.navbar > .navbar-nav a:active {
+    background-color: #444444;
+}
+
+.navbar > .navbar-nav a.router-link-exact-active {
+    color: white !important;
+    background-color: rgba(200, 92, 92, 0.2);
     transition: all 0.15s ease-in
-}
-
-.sidenav.collapse {
-    visibility: hidden;
-}
-
-.sidenav.collapse.show {
-    transition-property: margin-left, visibility;
-    transition-duration: 0.2s;
-    visibility: visible;
-    box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.38);
-}
-
-.sidenav.collapsing {
-    transition-property: margin-left, visibility;
-    transition-duration: 0.2s;
-    transition-timing-function: ease-in-out;
-}
-
-.sidenav.collapsing.side-collapse {
-    transition-property: margin-left, visibility;
-    height: 110vh;
-    margin-left: -200px;
-}
-
-.collapsible-panel {
-    background: #eeeeee;
-    box-shadow: inset 0 2px 2px 0 rgba(30, 30, 30, 0.1);
 }
 
 @media (max-width: 800px) {
@@ -170,11 +186,9 @@
 @keyframes flip {
     0% {
         transform: rotateY(0deg);
-        -webkit-transform: translate3D(0px, 0px, -20px) rotateY(0deg);
     }
     100% {
         transform: rotateY(180deg);
-        -webkit-transform: translate3D(0px, 0px, -20px) rotateY(180deg);
     }
 }
 
@@ -248,9 +262,4 @@
 #floating-btn:hover {
     background-color: rgba(60,70,80,0.8);
     transition: all 0.15s ease-in
-}
-
-/* Overrides bootstrap class */
-.border-dark {
-    border-color: rgba(20,20,20,0.8) !important;
 }

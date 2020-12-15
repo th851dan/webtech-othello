@@ -6,9 +6,11 @@ const Navbar = Vue.component('navbar-vue', {
     </button>
     <router-link class="navbar-brand d-none d-md-block pl-3" to="/othello"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>thello</router-link>
     <ul class="nav navbar-nav flex-row ml-auto">
-        <li class="nav-link mr-2 mr-md-0">
-            <router-link to="/rules">About</router-link>
-        </li>
+        <router-link 
+            v-for="element in [{route: '/', text: 'Home'},{route: '/othello', text: 'Game'},{route: '/rules', text: 'About'}]"
+            class="nav-link mr-2 mr-md-0"
+            :to="element.route"
+        >{{element.text}}</router-link>
         <li class="nav-link">
             <a href="https://github.com/th851dan/webtech-othello"><i class="fa fa-github" aria-hidden="true"></i></a>
         </li>

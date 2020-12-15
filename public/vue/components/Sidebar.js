@@ -3,7 +3,7 @@ import { webSocket, store } from "../Store.js";
 const Sidebar = Vue.component('sidebar-vue', {
     template: `
 <div>
-    <nav class="sidenav collapse side-collapse bg-light position-fixed" id="sidebar">
+    <nav class="sidenav collapse bg-light position-fixed" id="sidebar">
         <ul class="navbar-nav">
             <li class="nav-item">
                 <button type="button" role="button" class="text-left btn btn-light w-100" data-toggle="modal" data-target="#new-game-modal">New Game</button>

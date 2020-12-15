@@ -21,18 +21,32 @@ new Vue({
     el: '#app',
     components: {Sidebar, Navbar},
     router: router,
+    data() {
+        return {
+            transitionEnter: '',
+            transitionExit: '',
+        }
+    },
     template: `
     <div class="user-select-none">
         <navbar-vue class="animate__animated animate__slideInDown animate__faster"/>
         <sidebar-vue/>
-        <router-view/>
+        <transition :enter-active-class=transitionEnter :leave-active-class=transitionExit mode="out-in">
+            <router-view/>
+        </transition>
     </div>
     `
     ,
-    mounted: () => {
-        document.title = "Welcome to Othello"
-        $('#sidebar').collapse('hide')
-    },
+    watch: {
+        '$route'(to, from) {
+            let animation = 'animate__faster animate__animated animate__fade';
+            if (from.path === "/rules" || to.path === "/") {
+                this.transitionEnter = animation + 'InLeft';
+                this.transitionExit = animation + 'OutRight';
+            } else {
+                this.transitionEnter = animation + "InRight";
+                this.transitionExit = animation + "OutLeft";
+            }
+        }
+    }
 })
-
-export default router

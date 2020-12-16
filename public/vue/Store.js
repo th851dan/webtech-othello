@@ -79,7 +79,7 @@ function webSocketOnMessage(message) {
                 const { new_status } = object;
                 store.setStatus(new_status);
                 if (new_status === "GAME_OVER") {
-                    setTimeout(showGameOverPopup, 500);
+                    setTimeout(() => $('#game-over-modal').modal('show'), 500);
                 }
                 break;
             case "player-changed":
@@ -103,17 +103,5 @@ document.addEventListener('readystatechange', () => {
         connectWebSocket();
     }
 });
-
-function showGameOverPopup() {
-    const black = store.state.count1;
-    const white = store.state.count2;
-    if (black !== white) {
-        const winnerValue = black > white ? 1 : 2;
-        $('#game-over-title').text(winnerValue === 1 ? "Black wins!" : "White wins!")
-        $('#winner').attr('src', "assets/images/" + winnerValue + ".png");
-    } else
-        $('#game-over-title').text("Game over");
-    $('#game-over-modal').modal('show');
-}
 
 export { webSocket, store };

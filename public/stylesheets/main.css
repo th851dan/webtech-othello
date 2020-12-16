@@ -6,12 +6,11 @@
 .landing-page > #game-start {
     text-shadow: 1px 1px 2px rgba(10, 10, 10, 0.5);
     color: #818181;
+    transition: all 0.3s ease;
 }
 
-.landing-page > #game-start div:hover {
+.landing-page > #game-start:hover {
     transform: scale(1.1);
-    transition: all 0.3s ease;
-    animation: forwards;
 }
 
 .landing-page > #game-start #play-button {
@@ -23,6 +22,7 @@
     background: rgb(32,95,25);
     border: 5px solid saddlebrown;
     box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0.29);
+    background-size: cover;
 }
 
 .game-table .column-header {
@@ -40,6 +40,7 @@
 .game-table .cell {
     width: 48px;
     height: 48px;
+    transition: all 0.2s ease-in;
 }
 
 .game-table .cell img {
@@ -53,7 +54,6 @@
 
 .game-table .cell:hover {
     background-color: rgba(160, 160, 160, 0.3);
-    transition: all 0.2s ease-in;
 }
 
 .game-table .cell .dot {
@@ -145,18 +145,24 @@
     background: rgb(117,198,200);
     background: linear-gradient(180deg, rgba(117,198,200,1) 0%, rgba(86,148,150,1) 100%);
     width: 200px;
+    border:1px solid rgb(96,158,160);
 }
 
-.navbar > .navbar-nav a {
+.navbar > .navbar-nav.collapse {
+    visibility: visible;
+}
+
+.navbar > .navbar-nav a, .navbar .navbar-toggler {
+    transition: all 0.2s ease-in;
     color: #cccccc;
     text-decoration: none;
     font-size: 18px;
-    margin-right: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
-.navbar .navbar-nav a:hover {
+.navbar .navbar-nav a:hover, .navbar .navbar-toggler:hover {
     color: #eafffa;
-    transition: all 0.2s ease-in
 }
 
 .navbar > .navbar-nav a:active {
@@ -164,11 +170,26 @@
 }
 
 .navbar > .navbar-nav a.router-link-exact-active {
-    color: white !important;
+    color: white;
     background-color: rgba(200, 92, 92, 0.2);
-    transition: all 0.15s ease-in
 }
 
+@media (max-width: 767px) {
+    .navbar>.navbar-nav {
+        transition-duration: 0.3s;
+        transition-property: all;
+    }
+
+    .navbar>.navbar-nav.collapse {
+        visibility: hidden;
+        display: none;
+    }
+
+    .navbar>.navbar-nav.collapse.show {
+        visibility: visible;
+        display: inline-flex;
+    }
+}
 @media (max-width: 800px) {
     .game-table .column-header {
         font-size: 12px;
@@ -266,6 +287,7 @@
 }
 
 #floating-btn {
+    transition: all 0.15s ease-in;
     width: 4rem;
     height: 4rem;
     bottom: 2rem;
@@ -277,5 +299,4 @@
 
 #floating-btn:hover {
     background-color: rgba(60,70,80,0.8);
-    transition: all 0.15s ease-in
 }

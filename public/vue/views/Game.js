@@ -38,7 +38,7 @@ const Game = {
     mounted() {
         function checkWidth() {
             if (location.pathname === '/othello') {
-                $('#sidebar').collapse(window.innerWidth < 768 ? 'hide' : 'show');
+                $('.sidenav').collapse(window.innerWidth < 768 ? 'hide' : 'show');
             }
         }
         checkWidth();
@@ -67,7 +67,7 @@ const Game = {
         }
     },
     beforeDestroy() {
-        $('#sidebar').collapse('hide');
+        $('.sidenav').collapse('hide');
     }
 }
 

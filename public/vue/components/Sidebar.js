@@ -3,7 +3,7 @@ import { webSocket, store } from "../Store.js";
 const Sidebar = Vue.component('sidebar-vue', {
     template: `
 <div>
-    <nav class="sidenav collapse bg-light position-fixed" id="sidebar">
+    <nav class="sidenav collapse bg-light position-fixed">
         <ul class="navbar-nav">
             <li class="nav-item">
                 <button type="button" role="button" class="text-left btn btn-light w-100" data-toggle="modal" data-target="#new-game-modal">New Game</button>
@@ -63,10 +63,10 @@ const Sidebar = Vue.component('sidebar-vue', {
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center">
-                    <h5 class="modal-title" id="game-over-title"></h5>
+                    <h5 class="modal-title">{{gameOverTitle}}</h5>
                 </div>
-                <div class="modal-body" id="game-over-body">
-                    <p class="text-center jump-class"><img id="winner" src="" alt=""></p>
+                <div class="modal-body">
+                    <p v-if="count1 !== count2" class="text-center jump-class"><img :src="winnerSrc" alt=""></p>
                     <p class="text-center">Start new game?</p>
                 </div>
                 <div class="modal-footer">
@@ -79,12 +79,21 @@ const Sidebar = Vue.component('sidebar-vue', {
 </div>
     `,
     data() { return store.state },
-    methods: { send: (evt) => webSocket.send(evt.target.id) },
     computed: {
         displayedDifficulty() {
             return this.mode === '2' ? "-" : this.difficulty;
+        },
+        winnerSrc() {
+            return "assets/images/" + (this.count1 > this.count2 ? 1 : 2) + ".png"
+        },
+        gameOverTitle() {
+            if (this.count1 !== this.count2) {
+                return this.count1 > this.count2 ? "Black wins!" : "White wins!";
+            } else
+                return "Game over";
         }
-    }
+    },
+    methods: { send: (evt) => webSocket.send(evt.target.id) }
 })
 
 export default Sidebar;

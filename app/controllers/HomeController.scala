@@ -84,6 +84,7 @@ class HomeController @Inject()(implicit system: ActorSystem) extends InjectedCon
         case "difficulty" => gameController.setDifficulty(request.last)
         case "setupplayers" => gameController.setupPlayers(request.last)
         case "set" => processInputLine(request.last)
+        case "resize" => gameController.resizeBoard(request.last)
       }
       case message => log.warn("Unknown message: " + message)
     }

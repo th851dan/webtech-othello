@@ -85,6 +85,7 @@ class HomeController @Inject()(implicit system: ActorSystem) extends InjectedCon
         case "setupplayers" => gameController.setupPlayers(request.last)
         case "set" => processInputLine(request.last)
         case "resize" => gameController.resizeBoard(request.last)
+        case "rename" => gameController.setPlayerName(request(1).toInt, request(2));
       }
       case message => log.warn("Unknown message: " + message)
     }

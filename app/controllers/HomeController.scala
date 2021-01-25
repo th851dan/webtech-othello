@@ -18,7 +18,6 @@ import scala.swing.Reactor
 @Singleton
 class HomeController @Inject()(implicit system: ActorSystem) extends InjectedController {
 
-  // Should be removed from HomeController and started individually
   BoardModuleServer.main(Array.empty)
   UserModuleServer.main(Array.empty)
 
